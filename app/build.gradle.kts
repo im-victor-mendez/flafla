@@ -44,5 +44,10 @@ dependencies {
 
     // Firebase BoM
     implementation(platform(libs.firebase.bom))
+    // Firebase Analytics
     implementation(libs.firebase.analytics)
+    // Firestore Database
+    implementation(libs.firebase.firestore)
+    // Firebase Authentication
+    implementation(libs.firebase.auth)
 }
