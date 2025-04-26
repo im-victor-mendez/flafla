@@ -1,0 +1,8 @@
+{
+	"java.project.sourcePaths": ["app/src/main/java"],
+	"java.project.outputPath": "app/build/classes/java/main",
+	"java.configuration.updateBuildConfiguration": "automatic",
+
+	"docwriter.hotkey.windows": "Alt + .",
+	"cSpell.words": ["flafla"]
+}
