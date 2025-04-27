@@ -4,4 +4,15 @@
     <string name="cart">Cart</string>
     <string name="search">Search</string>
     <string name="menu">Menu</string>
+    <string name="specification">Specification</string>
+    <string name="terms_and_condition">Terms and Condition</string>
+    <string name="add_to_bag">Add to Bag</string>
+    <string name="product_id">PRODUCT_ID</string>
+    <string name="products_collection">products</string>
+    <string name="name_document_snapshot">name</string>
+    <string name="price_document_snapshot">price</string>
+    <string name="description_document_snapshot">description</string>
+    <string name="images_document_snapshot">images</string>
+    <string name="specifications_document_snapshot">specifications</string>
+    <string name="terms_and_conditions_document_snapshot">termsAndConditions</string>
 </resources>
