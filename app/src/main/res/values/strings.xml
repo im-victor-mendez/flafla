@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Flafla</string>
+    <string name="account">Account</string>
+    <string name="cart">Cart</string>
+    <string name="search">Search</string>
+    <string name="menu">Menu</string>
 </resources>
