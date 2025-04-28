@@ -15,4 +15,5 @@
     <string name="images_document_snapshot">images</string>
     <string name="specifications_document_snapshot">specifications</string>
     <string name="terms_and_conditions_document_snapshot">termsAndConditions</string>
+    <string name="products_document">products</string>
 </resources>

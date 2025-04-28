@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.example.flafla.enums.ProductType;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +85,18 @@ public class Product {
         this.termsAndConditions = builder.termsAndConditions;
         this.productType = builder.productType;
     }
+
+    public Product() {
+        this.id = "";
+        this.name = "";
+        this.description = "";
+        this.price = 0.0;
+        this.images = new ArrayList<>();
+        this.specifications = new HashMap<>();
+        this.termsAndConditions = new HashMap<>();
+        this.productType = ProductType.FLOWER; // o un valor por defecto
+    }
+
 
     @NonNull
     @Override
