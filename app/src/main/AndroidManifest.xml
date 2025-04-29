@@ -14,6 +14,12 @@
         android:theme="@style/Theme.Flafla"
         tools:targetApi="31">
         <activity
+            android:name=".CategoryProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".BaseActivity"
             android:exported="false" />
         <activity
