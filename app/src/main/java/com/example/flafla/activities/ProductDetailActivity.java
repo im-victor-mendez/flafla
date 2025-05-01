@@ -1,4 +1,4 @@
-package com.example.flafla;
+package com.example.flafla.activities;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.flafla.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 

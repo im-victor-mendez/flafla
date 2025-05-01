@@ -1,4 +1,4 @@
-package com.example.flafla;
+package com.example.flafla.activities;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.flafla.R;
 import com.example.flafla.adapters.ProductAdapter;
 import com.example.flafla.models.Product;
 import com.google.firebase.firestore.DocumentSnapshot;
