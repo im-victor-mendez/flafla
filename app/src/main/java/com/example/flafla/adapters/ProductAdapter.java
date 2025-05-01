@@ -11,8 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.flafla.ProductDetailActivity;
 import com.example.flafla.R;
+import com.example.flafla.activities.ProductDetailActivity;
 import com.example.flafla.models.Product;
 
 import java.util.List;
