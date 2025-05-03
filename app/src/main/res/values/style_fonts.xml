@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Montserrat -->
+    <style name="Text.Montserrat.Medium">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+    </style>
+
+    <style name="Text.Montserrat.Medium.Italic">
+        <item name="android:fontFamily">@font/montserrat_medium_italic</item>
+    </style>
+
+    <!-- Open Sans -->
+    <style name="Text.OpenSans.Regular">
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+    </style>
+
+    <style name="Text.OpenSans.Medium">
+        <item name="android:fontFamily">@font/open_sans_medium</item>
+    </style>
+</resources>
