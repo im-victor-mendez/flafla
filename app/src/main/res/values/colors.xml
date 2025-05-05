@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Neutral-->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!--Ivory-->
+    <color name="folded_ivory">#F5F4EB</color>
+    <!--Beige-->
+    <color name="beige">#D9D0C0</color>
+    <color name="beige_dark">#C6B8A4</color>
+    <!--Brown-->
+    <color name="brown">#8E644E</color>
+    <color name="brown_light">#99735E</color>
+    <color name="brown_toned">#BCA393</color>
 </resources>
