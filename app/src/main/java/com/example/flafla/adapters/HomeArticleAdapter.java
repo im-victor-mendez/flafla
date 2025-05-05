@@ -78,11 +78,11 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.
                 .into(holder.image);
 
         // TODO: Implementar la navegación al hacer clic en un artículo (actualmente está comentado)
-//        holder.itemView.setOnClickListener(v -> {
+        holder.itemView.setOnClickListener(v -> {
 //            Intent intent = new Intent(context, ArticleDetailActivity.class);
 //            intent.putExtra("article_id", article.getId());
 //            context.startActivity(intent);
-//        });
+        });
     }
 
     /**
