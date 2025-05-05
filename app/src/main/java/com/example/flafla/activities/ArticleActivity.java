@@ -1,12 +1,12 @@
 package com.example.flafla.activities;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -20,12 +20,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.image.coil.CoilImagesPlugin;
 
-public class ArticleActivity extends AppCompatActivity {
+public class ArticleActivity extends BaseActivity {
     public static final String EXTRA_ARTICLE = "ARTICLE";
     private FirebaseFirestore db;
     private Article article;
     TextView markdownView, title, date, author;
     ImageView image;
+    Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +39,23 @@ public class ArticleActivity extends AppCompatActivity {
             return insets;
         });
 
-//        setupToolbar();
+        setupToolbar();
 
         db = FirebaseFirestore.getInstance();
-
 
         String articleId = getIntent().getStringExtra(EXTRA_ARTICLE);
 
         fetchArticleProduct(articleId);
 
-        markdownView = findViewById(R.id.article_content);
+        back = findViewById(R.id.back_button);
+
         title = findViewById(R.id.article_title);
         date = findViewById(R.id.article_date);
         author = findViewById(R.id.article_author);
         image = findViewById(R.id.article_image);
+        markdownView = findViewById(R.id.article_content);
+
+        back.setOnClickListener(v -> finish());
     }
 
     private void fetchArticleProduct(String article) {
