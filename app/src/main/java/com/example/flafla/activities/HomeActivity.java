@@ -3,8 +3,11 @@ package com.example.flafla.activities;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +29,7 @@ import java.util.List;
  * Los artículos a mostrar se definen en el documento "homepage" de la colección "home",
  * el cual contiene una lista de IDs que se usan para recuperar los artículos desde la colección "articles".
  */
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private HomeArticleAdapter adapter;
@@ -37,7 +40,16 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_home), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        // Configurar el toolbar
+        setupToolbar();
 
         // Inicializar el RecyclerView
         recyclerView = findViewById(R.id.recycler_home);
