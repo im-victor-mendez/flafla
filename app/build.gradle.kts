@@ -50,4 +50,10 @@ dependencies {
     implementation(libs.firebase.firestore)
     // Firebase Authentication
     implementation(libs.firebase.auth)
+    // Markdown
+    implementation(libs.core)
+    implementation(libs.coil)
+    implementation(libs.markwon.image.coil)
+    //Glide
+    implementation(libs.glide)
 }
