@@ -14,7 +14,7 @@
         android:layout_height="165dp"
         android:src="@drawable/logo"
         tools:layout_editor_absoluteX="120dp"
-        tools:layout_editor_absoluteY="183dp" />
+        tools:layout_editor_absoluteY="159dp" />
 
     <TextView
         android:id="@+id/textView"
