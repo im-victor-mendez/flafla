@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Flafla"
         tools:targetApi="31">
         <activity
-            android:name=".Login"
+            android:name=".activities.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".activities.CategoryProductsActivity"
