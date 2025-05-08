@@ -2,14 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/activity_auth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login"
+    tools:context=".activities.AuthActivity"
     android:background="#F5F4EB">
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="171dp"
         android:layout_height="165dp"
         android:src="@drawable/logo"
@@ -17,82 +16,82 @@
         tools:layout_editor_absoluteY="159dp" />
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FLAFLA"
-        android:textColor="#99735E"
+        android:text="@string/app_name"
+        android:textAllCaps="true"
+        android:textColor="@color/brown_light"
         android:textSize="40dp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="134dp"
         tools:layout_editor_absoluteY="339dp" />
 
     <EditText
-        android:id="@+id/textView2"
+        android:id="@+id/email_auth"
         android:layout_width="373dp"
         android:layout_height="39dp"
-        android:hint="Enter your ID or email address"
+        android:hint="@string/enter_your_id_or_email_address"
         tools:layout_editor_absoluteX="19dp"
         tools:layout_editor_absoluteY="496dp" />
 
     <EditText
-        android:id="@+id/textView3"
+        android:id="@+id/password_auth"
         android:layout_width="372dp"
         android:layout_height="38dp"
-        android:hint="Password"
+        android:hint="@string/password"
         tools:layout_editor_absoluteX="19dp"
         tools:layout_editor_absoluteY="544dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login_auth"
         android:layout_width="88dp"
         android:layout_height="36dp"
-        android:background="F5F4EB"
-        android:text="log in"
+        android:background="@android:color/transparent"
+        android:text="@string/log_in"
         android:textColor="@color/black"
         android:textSize="10dp"
         tools:layout_editor_absoluteX="19dp"
         tools:layout_editor_absoluteY="582dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/guest_auth"
         android:layout_width="127dp"
         android:layout_height="33dp"
-        android:background="F5F4EB"
-        android:text="Enter as a guest"
+        android:background="@android:color/transparent"
+        android:text="@string/enter_as_a_guest"
         android:textColor="@color/black"
         android:textSize="10dp"
         tools:layout_editor_absoluteX="265dp"
         tools:layout_editor_absoluteY="582dp" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/create_auth"
         android:layout_width="135dp"
         android:layout_height="36dp"
-        android:background="F5F4EB"
-        android:text="Create an account"
+        android:background="@android:color/transparent"
+        android:text="@string/create_an_account"
         android:textColor="@color/black"
         android:textSize="10dp"
         tools:layout_editor_absoluteX="19dp"
         tools:layout_editor_absoluteY="650dp" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/find_password_auth"
         android:layout_width="125dp"
         android:layout_height="37dp"
-        android:background="F5F4EB"
-        android:text="Find Password"
+        android:background="@android:color/transparent"
+        android:text="@string/find_password"
         android:textColor="@color/black"
         android:textSize="10dp"
         tools:layout_editor_absoluteX="256dp"
         tools:layout_editor_absoluteY="650dp" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/find_id_auth"
         android:layout_width="88dp"
         android:layout_height="36dp"
-        android:background="F5F4EB"
-        android:text="Find ID"
+        android:background="@android:color/transparent"
+        android:text="@string/find_id"
         android:textColor="@color/black"
         android:textSize="10dp"
         tools:layout_editor_absoluteX="161dp"

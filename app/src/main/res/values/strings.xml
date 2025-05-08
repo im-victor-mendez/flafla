@@ -16,4 +16,11 @@
     <string name="specifications_document_snapshot">specifications</string>
     <string name="terms_and_conditions_document_snapshot">termsAndConditions</string>
     <string name="products_document">products</string>
+    <string name="enter_your_id_or_email_address">Enter your ID or email address</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="enter_as_a_guest">Enter as a guest</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="find_password">Find Password</string>
+    <string name="find_id">Find ID</string>
 </resources>
