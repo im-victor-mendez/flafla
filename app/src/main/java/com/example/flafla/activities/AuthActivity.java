@@ -1,5 +1,6 @@
 package com.example.flafla.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,8 +39,8 @@ public class AuthActivity extends AppCompatActivity {
 
         if (auth.getCurrentUser() != null) {
             goToHomeActivity();
-            // finish();
-            // return;
+            finish();
+            return;
         }
 
         emailEditText = findViewById(R.id.email_auth);
@@ -109,8 +110,8 @@ public class AuthActivity extends AppCompatActivity {
 
     //TODO: Merge Home branch
     private void goToHomeActivity() {
-        // Intent intent = new Intent(this, HomeActivity.class);
-        // startActivity(intent);
-        // finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
