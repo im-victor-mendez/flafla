@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_auth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.AuthActivity"
+    android:orientation="vertical"
     android:background="#F5F4EB">
 
     <ImageView
@@ -97,4 +98,5 @@
         tools:layout_editor_absoluteX="161dp"
         tools:layout_editor_absoluteY="650dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+
