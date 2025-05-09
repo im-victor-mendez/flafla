@@ -64,6 +64,17 @@ public class AuthManager {
                 });
     }
 
+    public void resetPassword(String email, AuthCallback callback) {
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onSuccess("A password reset email has been sent.");
+                    } else {
+                        callback.onError(task.getException());
+                    }
+                });
+    }
+
     public boolean isUserSignedIn() {
         return auth.getCurrentUser() != null;
     }

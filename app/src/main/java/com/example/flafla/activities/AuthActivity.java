@@ -22,7 +22,7 @@ import com.example.flafla.utils.AuthParams;
  * <p>
  * Esta actividad maneja el inicio de sesión, la creación de cuenta y el inicio de sesión anónimo
  * mediante Firebase Auth.
- * <p>
+ * </p>
  * Contiene los campos de entrada para el email y la contraseña, así como
  * botones para acceder a las funcionalidades de inicio de sesión, registro y acceso como invitado.
  */
@@ -36,7 +36,7 @@ public class AuthActivity extends AppCompatActivity {
      * <h1>On Create</h1>
      * <p>
      * Método llamado cuando se crea la actividad.
-     * <p>
+     * </p>
      * Inicializa los campos y botones, y configura los oyentes de click para
      * cada uno de los botones (Iniciar sesión, Crear cuenta, Iniciar como invitado).
      *
@@ -66,17 +66,23 @@ public class AuthActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.login_auth);
         Button createButton = findViewById(R.id.create_auth);
         Button guestButton = findViewById(R.id.guest_auth);
+        Button findPasswordButton = findViewById(R.id.find_password_auth);
+        Button findIdButton = findViewById(R.id.find_id_auth);
+
 
         loginButton.setOnClickListener(v -> login());
         createButton.setOnClickListener(v -> createAccount());
         guestButton.setOnClickListener(v -> signInAnonymously());
+
+        findPasswordButton.setOnClickListener(v -> resetPassword());
+        findIdButton.setOnClickListener(v -> recoverEmail());
     }
 
     /**
      * <h1>Login</h1>
      * <p>
      * Método que maneja el inicio de sesión de un usuario.
-     * <p>
+     * </p>
      * Valida los datos de entrada (email y contraseña), y llama a `AuthManager`
      * para intentar iniciar sesión con Firebase.
      * <p>
@@ -111,7 +117,7 @@ public class AuthActivity extends AppCompatActivity {
      * <h1>Create Account</h1>
      * <p>
      * Método que maneja la creación de una nueva cuenta.
-     * <p>
+     * </p>
      * Valida los datos de entrada (email y contraseña), y llama a `AuthManager`
      * para intentar crear la cuenta en Firebase.
      * <p>
@@ -147,7 +153,7 @@ public class AuthActivity extends AppCompatActivity {
      * <p>
      * Método que maneja el inicio de sesión anónimo. Llama a `AuthManager` para intentar iniciar
      * sesión de manera anónima con Firebase.
-     * <p>
+     * </p>
      * Si es exitoso, navega a la actividad de inicio (HomeActivity).
      */
     private void signInAnonymously() {
@@ -169,13 +175,38 @@ public class AuthActivity extends AppCompatActivity {
         });
     }
 
+    private void resetPassword() {
+        String email = emailEditText.getText().toString().trim();
+        if (email.isEmpty()) {
+            Toast.makeText(this, "Enter your email to recover your password.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        authManager.resetPassword(email, new AuthCallback() {
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(AuthActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                Toast.makeText(AuthActivity.this, "Error: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void recoverEmail() {
+        Toast.makeText(this, "If this email is registered, you will receive information to recover your account.", Toast.LENGTH_LONG).show();
+        resetPassword();
+    }
+
+
     /**
      * <h1>Go To Home Activity</h1>
      * <p>
-     * <p>
      * Método que navega a la actividad de inicio (HomeActivity)
      * después de una autenticación exitosa.
-     * <p>
+     * </p>
      * Finaliza la actividad actual.
      */
     private void goToHomeActivity() {
