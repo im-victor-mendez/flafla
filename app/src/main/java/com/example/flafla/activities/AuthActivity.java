@@ -13,38 +13,56 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.flafla.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.flafla.utils.AuthCallback;
+import com.example.flafla.utils.AuthManager;
+import com.example.flafla.utils.AuthParams;
 
+/**
+ * <h1>Auth Activity</h1>
+ * <p>
+ * Esta actividad maneja el inicio de sesión, la creación de cuenta y el inicio de sesión anónimo
+ * mediante Firebase Auth.
+ * <p>
+ * Contiene los campos de entrada para el email y la contraseña, así como
+ * botones para acceder a las funcionalidades de inicio de sesión, registro y acceso como invitado.
+ */
 public class AuthActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
-
+    private AuthManager authManager;
     private EditText emailEditText;
     private EditText passwordEditText;
 
+    /**
+     * <h1>On Create</h1>
+     * <p>
+     * Método llamado cuando se crea la actividad.
+     * <p>
+     * Inicializa los campos y botones, y configura los oyentes de click para
+     * cada uno de los botones (Iniciar sesión, Crear cuenta, Iniciar como invitado).
+     *
+     * @param savedInstanceState El estado guardado de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_auth);
 
+        // Configura los márgenes de la actividad para no sobreponerse con los bordes del sistema.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_auth), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        auth = FirebaseAuth.getInstance();
+        // Inicializa el AuthManager.
+        authManager = new AuthManager();
 
-        if (auth.getCurrentUser() != null) {
-            goToHomeActivity();
-            finish();
-            return;
-        }
-
+        // Encuentra las vistas para el email y la contraseña.
         emailEditText = findViewById(R.id.email_auth);
         passwordEditText = findViewById(R.id.password_auth);
+
+        // Encuentra los botones y asigna los oyentes de clic.
         Button loginButton = findViewById(R.id.login_auth);
         Button createButton = findViewById(R.id.create_auth);
         Button guestButton = findViewById(R.id.guest_auth);
@@ -54,61 +72,112 @@ public class AuthActivity extends AppCompatActivity {
         guestButton.setOnClickListener(v -> signInAnonymously());
     }
 
+    /**
+     * <h1>Login</h1>
+     * <p>
+     * Método que maneja el inicio de sesión de un usuario.
+     * <p>
+     * Valida los datos de entrada (email y contraseña), y llama a `AuthManager`
+     * para intentar iniciar sesión con Firebase.
+     * <p>
+     * Si la autenticación es exitosa, navega a la actividad de inicio (HomeActivity).
+     */
     private void login() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // Crea el objeto AuthParams con los parámetros necesarios.
+        AuthParams authParams = new AuthParams(email, password, emailEditText, passwordEditText);
 
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = auth.getCurrentUser();
-                        Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                        goToHomeActivity();
-                    } else {
-                        Toast.makeText(this, "Error al iniciar sesión: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        // Llama a AuthManager para intentar iniciar sesión.
+        authManager.login(authParams, new AuthCallback() {
+            @Override
+            public void onSuccess(String message) {
+                // Si la autenticación es exitosa, muestra un mensaje y navega a la actividad principal.
+                Toast.makeText(AuthActivity.this, message, Toast.LENGTH_SHORT).show();
+                goToHomeActivity();
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                // Si hay un error, muestra un mensaje de error.
+                String errorMessage = "Error: " + exception.getMessage();
+                Toast.makeText(AuthActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    /**
+     * <h1>Create Account</h1>
+     * <p>
+     * Método que maneja la creación de una nueva cuenta.
+     * <p>
+     * Valida los datos de entrada (email y contraseña), y llama a `AuthManager`
+     * para intentar crear la cuenta en Firebase.
+     * <p>
+     * Si la creación de cuenta es exitosa, navega a la actividad de inicio (HomeActivity).
+     */
     private void createAccount() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // Crea el objeto AuthParams con los parámetros necesarios.
+        AuthParams authParams = new AuthParams(email, password, emailEditText, passwordEditText);
 
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = auth.getCurrentUser();
-                        Toast.makeText(this, "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show();
-                        goToHomeActivity();
-                    } else {
-                        Toast.makeText(this, "Error al crear cuenta: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        // Llama a AuthManager para intentar crear la cuenta.
+        authManager.createAccount(authParams, new AuthCallback() {
+            @Override
+            public void onSuccess(String message) {
+                // Si la cuenta se crea exitosamente, muestra un mensaje y navega a la actividad principal.
+                Toast.makeText(AuthActivity.this, message, Toast.LENGTH_SHORT).show();
+                goToHomeActivity();
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                // Si hay un error, muestra un mensaje de error.
+                String errorMessage = "Error: " + exception.getMessage();
+                Toast.makeText(AuthActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    /**
+     * <h1>Sign In Anonymously</h1>
+     * <p>
+     * Método que maneja el inicio de sesión anónimo. Llama a `AuthManager` para intentar iniciar
+     * sesión de manera anónima con Firebase.
+     * <p>
+     * Si es exitoso, navega a la actividad de inicio (HomeActivity).
+     */
     private void signInAnonymously() {
-        auth.signInAnonymously()
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Sesión como invitado iniciada", Toast.LENGTH_SHORT).show();
-                        goToHomeActivity();
-                    } else {
-                        Toast.makeText(this, "Error al ingresar como invitado", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        // Llama a AuthManager para intentar iniciar sesión anónimamente.
+        authManager.signInAnonymously(new AuthCallback() {
+            @Override
+            public void onSuccess(String message) {
+                // Si la autenticación es exitosa, muestra un mensaje y navega a la actividad principal.
+                Toast.makeText(AuthActivity.this, message, Toast.LENGTH_SHORT).show();
+                goToHomeActivity();
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                // Si hay un error, muestra un mensaje de error.
+                String errorMessage = "Error: " + exception.getMessage();
+                Toast.makeText(AuthActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    //TODO: Merge Home branch
+    /**
+     * <h1>Go To Home Activity</h1>
+     * <p>
+     * <p>
+     * Método que navega a la actividad de inicio (HomeActivity)
+     * después de una autenticación exitosa.
+     * <p>
+     * Finaliza la actividad actual.
+     */
     private void goToHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
