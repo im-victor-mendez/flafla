@@ -66,6 +66,13 @@ public class AuthActivity extends AppCompatActivity {
         // Inicializa el AuthManager.
         authManager = new AuthManager();
 
+        // Si el usuario ya está autenticado, navega directamente a la actividad principal.
+        if (authManager.isUserSignedIn()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+            return;
+        }
+
         // Encuentra las vistas para el email y la contraseña.
         emailEditText = findViewById(R.id.email_auth);
         passwordEditText = findViewById(R.id.password_auth);
