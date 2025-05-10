@@ -24,9 +24,8 @@ import java.util.List;
  * Cada artículo se muestra con su título, una etiqueta (tag) y una imagen.
  */
 public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.ArticleViewHolder> {
-
-    private final List<Article> articles; // Lista de artículos a mostrar
-    private final Context context; // Contexto de la aplicación
+    private final List<Article> articles;
+    private final Context context;
 
     /**
      * Constructor del adaptador.

@@ -1,7 +1,12 @@
 package com.example.flafla.activities;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -11,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.flafla.R;
 import com.example.flafla.adapters.HomeArticleAdapter;
 import com.example.flafla.models.Article;
@@ -31,20 +37,37 @@ import java.util.List;
  */
 public class HomeActivity extends BaseActivity {
 
-    private RecyclerView recyclerView;
     private HomeArticleAdapter adapter;
     private final List<Article> articleList = new ArrayList<>();
     private FirebaseFirestore db;
-    private HomePageContent data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_home), (v, insets) -> {
+
+        View rootView = findViewById(R.id.activity_home);
+        View banner = findViewById(R.id.banner);
+        View toolbar = findViewById(R.id.toolbar);
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            // Establece el padding para evitar que el contenido se meta bajo las barras
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+
+            // Asegura que el cálculo del alto del toolbar se haga después de que fue medido
+            banner.post(() -> {
+                int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+                int toolbarHeight = toolbar.getHeight();
+                int availableHeight = screenHeight - systemBars.top - systemBars.bottom - toolbarHeight;
+
+                ViewGroup.LayoutParams params = banner.getLayoutParams();
+                params.height = availableHeight;
+                banner.setLayoutParams(params);
+            });
+
             return insets;
         });
 
@@ -52,7 +75,7 @@ public class HomeActivity extends BaseActivity {
         setupToolbar();
 
         // Inicializar el RecyclerView
-        recyclerView = findViewById(R.id.recycler_home);
+        RecyclerView recyclerView = findViewById(R.id.recycler_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new HomeArticleAdapter(articleList, this);
         recyclerView.setAdapter(adapter);
@@ -89,12 +112,15 @@ public class HomeActivity extends BaseActivity {
     private void onSuccess(DocumentSnapshot documentSnapshot) {
         // Extraer IDs de artículos y consultar individualmente
         if (documentSnapshot.exists()) {
-            data = documentSnapshot.toObject(HomePageContent.class);
+            HomePageContent data = documentSnapshot.toObject(HomePageContent.class);
 
             assert data != null;
 
             // Obtener la lista de IDs de artículos
             List<String> ids = data.getFeatured_articles();
+
+            ((TextView) findViewById(R.id.banner_title)).setText(data.getBanner_title());
+            Glide.with(this).load(data.getBanner_image()).into((ImageView) findViewById(R.id.banner_image));
 
 
             // Iterar sobre cada ID y consultar el artículo correspondiente
