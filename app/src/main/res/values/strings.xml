@@ -24,4 +24,6 @@
     <string name="find_password">Find Password</string>
     <string name="find_id">Find ID</string>
     <string name="flafla_logo">Flafla Logo</string>
+    <string name="log_out">Log Out</string>
+    <string name="profile_image">Profile Image</string>
 </resources>
