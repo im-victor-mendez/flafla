@@ -28,8 +28,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp">
+                android:layout_height="match_parent">
 
                 <!-- Línea guía al 40% de la altura -->
                 <androidx.constraintlayout.widget.Guideline

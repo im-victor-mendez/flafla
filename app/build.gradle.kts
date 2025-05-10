@@ -53,4 +53,7 @@ dependencies {
     implementation(libs.firebase.auth)
     //Glide
     implementation(libs.glide)
+
+    /* Style */
+    implementation(libs.flexbox)
 }
