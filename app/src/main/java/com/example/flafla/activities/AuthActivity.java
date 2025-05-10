@@ -1,9 +1,17 @@
 package com.example.flafla.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -62,7 +70,7 @@ public class AuthActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.email_auth);
         passwordEditText = findViewById(R.id.password_auth);
 
-        // Encuentra los botones y asigna los oyentes de clic.
+        // Encuentra los botones y asigna los oyentes de click.
         Button loginButton = findViewById(R.id.login_auth);
         Button createButton = findViewById(R.id.create_auth);
         Button guestButton = findViewById(R.id.guest_auth);
@@ -76,7 +84,47 @@ public class AuthActivity extends AppCompatActivity {
 
         findPasswordButton.setOnClickListener(v -> resetPassword());
         findIdButton.setOnClickListener(v -> recoverEmail());
+
+        emailEditText.setOnEditorActionListener(this::emailListener);
+        passwordEditText.setOnEditorActionListener(this::passwordListener);
     }
+
+    /**
+     * <h1>Dispatch Touch Event</h1>
+     * <p>
+     * Este método sobrescribe el comportamiento de toque de pantalla en la actividad.
+     * Detecta si el usuario toca fuera de un campo de texto (<code>EditText</code>) y,
+     * si es así, oculta el teclado y elimina el foco del campo.
+     * </p>
+     *
+     * <p>
+     * Es útil para mejorar la experiencia del usuario en formularios,
+     * ya que evita que el teclado se quede abierto innecesariamente.
+     * </p>
+     *
+     * @param ev Evento táctil detectado en la actividad.
+     * @return true si el evento fue manejado correctamente, o el comportamiento predeterminado
+     * de <code>super.dispatchTouchEvent(ev)</code> en otros casos.
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
 
     /**
      * <h1>Login</h1>
@@ -175,6 +223,14 @@ public class AuthActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * <h1>Reset Password</h1>
+     * <p>
+     * Método que solicita un enlace de restablecimiento de contraseña al correo proporcionado.
+     * </p>
+     * Si el campo de correo está vacío, muestra un mensaje pidiendo que se ingrese uno.
+     * Si se proporciona un correo válido, llama al `AuthManager` para enviar el correo de recuperación.
+     */
     private void resetPassword() {
         String email = emailEditText.getText().toString().trim();
         if (email.isEmpty()) {
@@ -195,7 +251,21 @@ public class AuthActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * <h1>Recover Email</h1>
+     * <p>
+     * Método que simula la recuperación del correo electrónico de una cuenta,
+     * reutilizando la lógica de restablecimiento de contraseña.
+     * </p>
+     * Muestra un mensaje informando al usuario que recibirá un correo si el email existe.
+     * Si el campo de email está vacío, se muestra una advertencia.
+     */
     private void recoverEmail() {
+        if (emailEditText.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Enter your email to recover your password.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Toast.makeText(this, "If this email is registered, you will receive information to recover your account.", Toast.LENGTH_LONG).show();
         resetPassword();
     }
@@ -213,5 +283,51 @@ public class AuthActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    /**
+     * <h1>Email Listener</h1>
+     * <p>
+     * Escucha el evento del botón de acción del teclado cuando se está
+     * escribiendo en el campo de correo electrónico. Si se presiona la tecla
+     * "Next", el foco se mueve al campo de contraseña.
+     * </p>
+     *
+     * @param v        TextView que dispara el evento
+     * @param actionId Código de acción del teclado (por ejemplo, IME_ACTION_NEXT)
+     * @param event    Evento de teclado (puede ser null)
+     * @return true si el evento fue manejado, false en caso contrario
+     */
+    private boolean emailListener(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            passwordEditText.requestFocus();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * <h1>Password Listener</h1>
+     * <p>
+     * Escucha el evento del botón de acción del teclado cuando se está
+     * escribiendo en el campo de contraseña. Si se presiona la tecla
+     * "Done", el teclado se oculta.
+     * </p>
+     *
+     * @param v        TextView que dispara el evento
+     * @param actionId Código de acción del teclado (por ejemplo, IME_ACTION_DONE)
+     * @param event    Evento de teclado (puede ser null)
+     * @return true si el evento fue manejado, false en caso contrario
+     */
+    private boolean passwordListener(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            // Ocultar el teclado
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
+            }
+            return true;
+        }
+        return false;
     }
 }
