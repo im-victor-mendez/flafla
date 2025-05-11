@@ -38,10 +38,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
 
         searchBtn.setOnClickListener(v -> {
-            Log.d("BaseActivity", "Search button clicked");
-            // TODO: Implementar la actividad de búsqueda
-//            Intent intent = new Intent(this, SearchActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
         });
 
         cartBtn.setOnClickListener(v -> {
