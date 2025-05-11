@@ -1,7 +1,6 @@
 package com.example.flafla.activities;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,16 +16,17 @@ import com.example.flafla.models.Article;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+
 import io.noties.markwon.Markwon;
 import io.noties.markwon.image.coil.CoilImagesPlugin;
 
 public class ArticleActivity extends BaseActivity {
     public static final String EXTRA_ARTICLE = "ARTICLE";
     private FirebaseFirestore db;
-    private Article article;
     TextView markdownView, title, date, author;
     ImageView image;
-    Button back;
+    TextView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +71,18 @@ public class ArticleActivity extends BaseActivity {
      */
     private void onSuccess(DocumentSnapshot doc) {
         if (doc.exists()) {
-            article = doc.toObject(Article.class);
+            Article article = doc.toObject(Article.class);
 
             Markwon markwon = Markwon.builder(this)
                     .usePlugin(CoilImagesPlugin.create(this))
                     .build();
 
+            assert article != null;
+
+            String dateFormatted = SimpleDateFormat.getDateInstance().format(article.getDate().toDate());
+
             title.setText(article.getTitle());
-            date.setText(article.getDate().toString());
+            date.setText(dateFormatted);
             author.setText(article.getAuthor());
             Glide.with(this)
                     .load(article.getImage())

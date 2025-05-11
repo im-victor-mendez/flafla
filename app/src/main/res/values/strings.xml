@@ -33,4 +33,9 @@
     <string name="profile_image">Profile Image</string>
     <string name="banner_image">Banner Image</string>
     <string name="article_image">Article Image</string>
+    <string name="article_title">Article Title</string>
+    <string name="article_author">Article Author</string>
+    <string name="article_content">Article Content</string>
+    <string name="article_date">Article Date</string>
+    <string name="blog">Blog</string>
 </resources>
