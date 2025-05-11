@@ -1,6 +1,7 @@
 package com.example.flafla.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.flafla.R;
+import com.example.flafla.activities.ArticleActivity;
 import com.example.flafla.models.Article;
+import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.List;
 
@@ -24,9 +28,8 @@ import java.util.List;
  * Cada artículo se muestra con su título, una etiqueta (tag) y una imagen.
  */
 public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.ArticleViewHolder> {
-
-    private final List<Article> articles; // Lista de artículos a mostrar
-    private final Context context; // Contexto de la aplicación
+    private final List<Article> articles;
+    private final Context context;
 
     /**
      * Constructor del adaptador.
@@ -67,9 +70,29 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.
         // Asigna el título del artículo al TextView
         holder.title.setText(article.getTitle());
 
-        // Si tiene tags, muestra el primer tag como un resumen
+        // Limpia el contenedor de tags antes de agregar nuevos
+        holder.tagsContainer.removeAllViews();
+
+        // Si el artículo tiene tags, añadirlos al contenedor
         if (article.getTags() != null && !article.getTags().isEmpty()) {
-            holder.tag.setText(article.getTags().get(0));
+            for (String tag : article.getTags()) {
+                // Crear un nuevo TextView para cada tag
+                TextView tagView = new TextView(context);
+                tagView.setText(tag);
+                tagView.setTextColor(ContextCompat.getColor(context, R.color.brown));
+                tagView.setBackground(ContextCompat.getDrawable(context, R.drawable.tag)); // Drawable para el fondo del tag
+                tagView.setTextSize(12);
+                tagView.setPadding(24, 8, 24, 8); // Padding Horizontal y Vertical
+                FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(0, 0, 16, 16); // Márgenes entre los tags
+                tagView.setLayoutParams(params);
+
+                // Añadir el TextView al contenedor de tags
+                holder.tagsContainer.addView(tagView);
+            }
         }
 
         // Usar Glide para cargar la imagen del artículo de forma eficiente
@@ -77,12 +100,11 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.
                 .load(article.getImage())
                 .into(holder.image);
 
-        // TODO: Implementar la navegación al hacer clic en un artículo (actualmente está comentado)
-//        holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, ArticleDetailActivity.class);
-//            intent.putExtra("article_id", article.getId());
-//            context.startActivity(intent);
-//        });
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ArticleActivity.class);
+            intent.putExtra(ArticleActivity.EXTRA_ARTICLE, article.getId());
+            context.startActivity(intent);
+        });
     }
 
     /**
@@ -102,18 +124,14 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.
      */
     public static class ArticleViewHolder extends RecyclerView.ViewHolder {
         ImageView image; // Imagen del artículo
-        TextView title, tag; // Título y primer tag del artículo
+        TextView title;  // Título del artículo
+        FlexboxLayout tagsContainer; // Contenedor para los tags dinámicos
 
-        /**
-         * Constructor del ViewHolder.
-         *
-         * @param itemView La vista inflada del artículo.
-         */
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
-            image = itemView.findViewById(R.id.image_article);
-            title = itemView.findViewById(R.id.text_title);
-            tag = itemView.findViewById(R.id.text_tag);
+            image = itemView.findViewById(R.id.image);
+            title = itemView.findViewById(R.id.title);
+            tagsContainer = itemView.findViewById(R.id.article_tags_container);
         }
     }
 }

@@ -20,6 +20,12 @@
             android:name=".activities.SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ArticleActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.CategoryProductsActivity"
             android:exported="false" />
         <activity

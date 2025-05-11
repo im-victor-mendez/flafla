@@ -53,4 +53,13 @@ dependencies {
     implementation(libs.firebase.auth)
     //Glide
     implementation(libs.glide)
+
+    /* Style */
+    implementation(libs.flexbox)
+
+    /* Article */
+    // Markdown
+    implementation(libs.core)
+    implementation(libs.coil)
+    implementation(libs.markwon.image.coil)
 }
