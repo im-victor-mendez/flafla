@@ -1,6 +1,7 @@
 package com.example.flafla.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.flafla.R;
+import com.example.flafla.activities.ArticleActivity;
 import com.example.flafla.models.Article;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -98,11 +100,10 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.
                 .load(article.getImage())
                 .into(holder.image);
 
-        // TODO: Implementar la navegación al hacer click en un artículo
         holder.itemView.setOnClickListener(v -> {
-            // Intent intent = new Intent(context, ArticleDetailActivity.class);
-            // intent.putExtra("article_id", article.getId());
-            // context.startActivity(intent);
+            Intent intent = new Intent(context, ArticleActivity.class);
+            intent.putExtra(ArticleActivity.EXTRA_ARTICLE, article.getId());
+            context.startActivity(intent);
         });
     }
 
