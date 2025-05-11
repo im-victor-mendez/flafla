@@ -16,6 +16,10 @@
     <string name="specifications_document_snapshot">specifications</string>
     <string name="terms_and_conditions_document_snapshot">termsAndConditions</string>
     <string name="products_document">products</string>
+    <string name="button">Button</string>
+    <string name="modal">Modal</string>
+    <string name="back">Back</string>
+    <string name="chevron_left_image">Chevron Left Image</string>
     <string name="enter_your_id_or_email_address">Enter your ID or email address</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
