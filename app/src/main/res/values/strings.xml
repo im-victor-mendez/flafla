@@ -16,4 +16,26 @@
     <string name="specifications_document_snapshot">specifications</string>
     <string name="terms_and_conditions_document_snapshot">termsAndConditions</string>
     <string name="products_document">products</string>
+    <string name="DOC_ARTICLES">articles</string>
+    <string name="button">Button</string>
+    <string name="modal">Modal</string>
+    <string name="back">Back</string>
+    <string name="chevron_left_image">Chevron Left Image</string>
+    <string name="enter_your_id_or_email_address">Enter your ID or email address</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="enter_as_a_guest">Enter as a guest</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="find_password">Find Password</string>
+    <string name="find_id">Find ID</string>
+    <string name="flafla_logo">Flafla Logo</string>
+    <string name="log_out">Log Out</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="banner_image">Banner Image</string>
+    <string name="article_image">Article Image</string>
+    <string name="article_title">Article Title</string>
+    <string name="article_author">Article Author</string>
+    <string name="article_content">Article Content</string>
+    <string name="article_date">Article Date</string>
+    <string name="blog">Blog</string>
 </resources>
