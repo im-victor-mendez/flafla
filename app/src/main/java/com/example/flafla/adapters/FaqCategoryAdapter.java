@@ -12,24 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.flafla.R;
 import com.example.flafla.models.FaqCategory;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
- * <h1>Faq Category Adapter</h1>
- * <p>
- * Adapter for displaying FAQ categories, each containing a list of questions.
- * <p>
- * This adapter manages a nested RecyclerView for showing questions per category.
+ * Adapter para mostrar categorías de FAQ expandibles que revelan preguntas al hacer clic.
  */
 public class FaqCategoryAdapter extends RecyclerView.Adapter<FaqCategoryAdapter.CategoryViewHolder> {
 
     private final List<FaqCategory> faqCategories;
+    private final Set<Integer> expandedCategoryPositions = new HashSet<>();
 
-    /**
-     * Constructor to initialize the adapter with a list of FAQ categories.
-     *
-     * @param faqCategories List of FaqCategory objects.
-     */
     public FaqCategoryAdapter(List<FaqCategory> faqCategories) {
         this.faqCategories = faqCategories;
     }
@@ -47,9 +41,21 @@ public class FaqCategoryAdapter extends RecyclerView.Adapter<FaqCategoryAdapter.
         FaqCategory category = faqCategories.get(position);
         holder.categoryTitle.setText(category.getCategory());
 
+        boolean isExpanded = expandedCategoryPositions.contains(position);
+        holder.questionsRecycler.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
         FaqQuestionAdapter questionAdapter = new FaqQuestionAdapter(category.getQuestions());
         holder.questionsRecycler.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.questionsRecycler.setAdapter(questionAdapter);
+
+        holder.categoryTitle.setOnClickListener(v -> {
+            if (isExpanded) {
+                expandedCategoryPositions.remove(position);
+            } else {
+                expandedCategoryPositions.add(position);
+            }
+            notifyItemChanged(position);
+        });
     }
 
     @Override
@@ -57,10 +63,6 @@ public class FaqCategoryAdapter extends RecyclerView.Adapter<FaqCategoryAdapter.
         return faqCategories.size();
     }
 
-    /**
-     * <h1>Category ViewHolder</h1>
-     * ViewHolder for displaying the category title and a list of associated questions.
-     */
     static class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView categoryTitle;
         RecyclerView questionsRecycler;

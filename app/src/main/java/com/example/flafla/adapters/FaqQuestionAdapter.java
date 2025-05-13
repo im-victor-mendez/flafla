@@ -11,24 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.flafla.R;
 import com.example.flafla.models.FaqQuestion;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
- * <h1>Faq Question Adapter</h1>
- * <p>
- * Adapter for displaying a list of questions and answers inside each FAQ category.
- * <p>
- * Used within {@link FaqCategoryAdapter} to populate inner RecyclerViews.
+ * Adapter para mostrar preguntas expandibles que revelan su respuesta.
  */
 public class FaqQuestionAdapter extends RecyclerView.Adapter<FaqQuestionAdapter.QuestionViewHolder> {
 
     private final List<FaqQuestion> questions;
+    private final Set<Integer> expandedPositions = new HashSet<>();
 
-    /**
-     * Constructor to initialize the adapter with a list of questions.
-     *
-     * @param questions List of FaqQuestion objects to display.
-     */
     public FaqQuestionAdapter(List<FaqQuestion> questions) {
         this.questions = questions;
     }
@@ -46,6 +40,18 @@ public class FaqQuestionAdapter extends RecyclerView.Adapter<FaqQuestionAdapter.
         FaqQuestion question = questions.get(position);
         holder.question.setText(question.getQuestion());
         holder.answer.setText(question.getAnswer());
+
+        boolean isExpanded = expandedPositions.contains(position);
+        holder.answer.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
+        holder.question.setOnClickListener(v -> {
+            if (isExpanded) {
+                expandedPositions.remove(position);
+            } else {
+                expandedPositions.add(position);
+            }
+            notifyItemChanged(position);
+        });
     }
 
     @Override
@@ -53,10 +59,6 @@ public class FaqQuestionAdapter extends RecyclerView.Adapter<FaqQuestionAdapter.
         return questions.size();
     }
 
-    /**
-     * <h1>Question ViewHolder</h1>
-     * ViewHolder for displaying a single FAQ question and its answer.
-     */
     static class QuestionViewHolder extends RecyclerView.ViewHolder {
         TextView question, answer;
 
