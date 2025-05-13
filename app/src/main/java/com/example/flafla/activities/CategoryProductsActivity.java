@@ -38,9 +38,8 @@ public class CategoryProductsActivity extends AppCompatActivity {
     public static final String EXTRA_CATEGORY = "CATEGORY";
 
     private FirebaseFirestore db;
-    private RecyclerView recyclerView;
     private ProductAdapter adapter;
-    private List<Product> products = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +48,9 @@ public class CategoryProductsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new ProductAdapter(this, products);
+        adapter = new ProductAdapter(this, products, R.layout.item_product);
         recyclerView.setAdapter(adapter);
 
 
@@ -81,13 +80,13 @@ public class CategoryProductsActivity extends AppCompatActivity {
     /**
      * <h1>Chunk</h1>
      * <p>
-     * Divide una lista en trozos de tamaño maxSize.
+     * Divide una lista en trozos de tamaño 10.
      */
-    private <T> List<List<T>> chunk(List<T> list, int maxSize) {
+    private <T> List<List<T>> chunk(List<T> list) {
         List<List<T>> chunks = new ArrayList<>();
 
-        for (int i = 0; i < list.size(); i += maxSize) {
-            chunks.add(list.subList(i, Math.min(i + maxSize, list.size())));
+        for (int i = 0; i < list.size(); i += 10) {
+            chunks.add(list.subList(i, Math.min(i + 10, list.size())));
         }
 
         return chunks;
@@ -104,7 +103,7 @@ public class CategoryProductsActivity extends AppCompatActivity {
 
         // Hacer batched get de productos (Firestore permite hasta 10 en whereIn)
         // Si son > 10, fragmenta en lotes de 10
-        List<List<String>> batches = chunk(ids, 10);
+        List<List<String>> batches = chunk(ids);
 
         AtomicInteger completedBatches = new AtomicInteger(0);
 
@@ -124,9 +123,7 @@ public class CategoryProductsActivity extends AppCompatActivity {
                             adapter.notifyDataSetChanged();
                         }
                     })
-                    .addOnFailureListener(e -> {
-                        Log.e("CategoryProducts", "Error al cargar productos", e);
-                    });
+                    .addOnFailureListener(e -> Log.e("CategoryProducts", "Error al cargar productos", e));
         }
     }
 

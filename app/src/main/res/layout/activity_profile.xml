@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/folded_ivory"
+    tools:context=".activities.ProfileActivity">
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header_profile"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/beige"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/circle_bg"
+            android:contentDescription="@string/profile_image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/person"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Quick Actions -->
+    <LinearLayout
+        android:id="@+id/quick_actions"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/brown_toned"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/header_profile">
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/log_out"
+            android:drawableLeft="@drawable/logout"
+            android:drawableTint="@color/white"
+            android:drawablePadding="8dp"
+            android:padding="16dp"
+            android:backgroundTint="#D65A5A"
+            android:textColor="@color/white"
+            android:layout_margin="16dp"
+            tools:ignore="RtlHardcoded" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

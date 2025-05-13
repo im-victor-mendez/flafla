@@ -25,6 +25,7 @@ import java.util.Map;
  * Carga la información del producto desde Firestore y la muestra en la interfaz de usuario.
  */
 public class ProductDetailActivity extends AppCompatActivity {
+    public static final String EXTRA_PRODUCT = "PRODUCT_ID";
     private FirebaseFirestore db;
 
     private LinearLayout specifications, termsConditions;
@@ -40,7 +41,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // Obtener el ID del producto pasado a través de un Intent
-        String productId = getIntent().getStringExtra(getString(R.string.product_id));
+
+        String productId = getIntent().getStringExtra(EXTRA_PRODUCT);
 
         // Cargar producto desde Firestore
         loadProduct(productId);
@@ -66,7 +68,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     /**
      * <h1>On Success</h1>
      * <p>
-     * Método que maneja la respuesta exitosa de la consulta a Firestore.
+     * Metodo que maneja la respuesta exitosa de la consulta a Firestore.
      * Si el documento existe, se procede a mostrar la información.
      *
      * @param documentSnapshot El documento recuperado de Firestore.
@@ -79,7 +81,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     /**
      * <h1>On Failure</h1>
      * <p>
-     * Método que maneja el fallo en la consulta a Firestore.
+     * Metodo que maneja el fallo en la consulta a Firestore.
      * <p>
      * Puedes agregar una lógica de manejo de errores aquí, como mostrar un mensaje de error.
      *
@@ -138,7 +140,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     /**
      * <h1>Display Key Values</h1>
      * <p>
-     * Este método se encarga de agregar un TextView dinámicamente para cada par clave-valor
+     * Este metodo se encarga de agregar un TextView dinámicamente para cada par clave-valor
      * en el mapa proporcionado, y los agrega a un contenedor LinearLayout.
      *
      * @param container El LinearLayout donde se agregarán los TextViews.
