@@ -1,5 +1,6 @@
 package com.example.flafla.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -36,7 +37,10 @@ public class MenuActivity extends AppCompatActivity {
         findViewById(R.id.menu_people).setOnClickListener(v -> showToast("PEOPLE"));
         findViewById(R.id.menu_blog).setOnClickListener(v -> showToast("BLOG"));
         findViewById(R.id.menu_contact).setOnClickListener(v -> showToast("CONTACT"));
-        findViewById(R.id.menu_faq).setOnClickListener(v -> showToast("FAQ"));
+        findViewById(R.id.menu_faq).setOnClickListener(v -> {
+            startActivity(new Intent(this, FaqActivity.class));
+            finish();
+        });
         findViewById(R.id.menu_catalogue).setOnClickListener(v -> showToast("CATALOGUE"));
     }
 
