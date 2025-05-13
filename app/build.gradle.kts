@@ -56,7 +56,8 @@ dependencies {
 
     /* Style */
     implementation(libs.flexbox)
-    implementation("androidx.transition:transition:1.4.1")
+    implementation(libs.transition)
+    implementation(libs.recyclerview)
 
     /* Article */
     // Markdown

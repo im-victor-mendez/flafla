@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,8 +52,14 @@ public class FaqActivity extends AppCompatActivity {
 
         RecyclerView faqRecycler = findViewById(R.id.faqRecycler);
         faqRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        // Agrega el divisor entre categorías
+        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        faqRecycler.addItemDecoration(divider);
+
         adapter = new FaqCategoryAdapter(faqCategories);
         faqRecycler.setAdapter(adapter);
+
 
         fetchFaqData();
     }

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,6 +48,13 @@ public class FaqCategoryAdapter extends RecyclerView.Adapter<FaqCategoryAdapter.
         FaqQuestionAdapter questionAdapter = new FaqQuestionAdapter(category.getQuestions());
         holder.questionsRecycler.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.questionsRecycler.setAdapter(questionAdapter);
+
+        // Agrega el divisor entre preguntas
+        if (holder.questionsRecycler.getItemDecorationCount() == 0) {
+            DividerItemDecoration questionDivider = new DividerItemDecoration(holder.itemView.getContext(), DividerItemDecoration.VERTICAL);
+            holder.questionsRecycler.addItemDecoration(questionDivider);
+        }
+
 
         // Mostrar u ocultar preguntas
         holder.questionsRecycler.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
