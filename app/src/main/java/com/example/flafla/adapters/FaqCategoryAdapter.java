@@ -3,6 +3,7 @@ package com.example.flafla.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class FaqCategoryAdapter extends RecyclerView.Adapter<FaqCategoryAdapter.CategoryViewHolder> {
 
     private final List<FaqCategory> faqCategories;
-    private final Set<Integer> expandedCategoryPositions = new HashSet<>();
+    private final Set<Integer> expandedPositions = new HashSet<>(); // Control de expansión
 
     public FaqCategoryAdapter(List<FaqCategory> faqCategories) {
         this.faqCategories = faqCategories;
@@ -39,20 +40,24 @@ public class FaqCategoryAdapter extends RecyclerView.Adapter<FaqCategoryAdapter.
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         FaqCategory category = faqCategories.get(position);
-        holder.categoryTitle.setText(category.getCategory());
+        boolean isExpanded = expandedPositions.contains(position);
 
-        boolean isExpanded = expandedCategoryPositions.contains(position);
-        holder.questionsRecycler.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        holder.categoryTitle.setText(category.getCategory());
 
         FaqQuestionAdapter questionAdapter = new FaqQuestionAdapter(category.getQuestions());
         holder.questionsRecycler.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.questionsRecycler.setAdapter(questionAdapter);
 
-        holder.categoryTitle.setOnClickListener(v -> {
-            if (isExpanded) {
-                expandedCategoryPositions.remove(position);
+        // Mostrar u ocultar preguntas
+        holder.questionsRecycler.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        holder.toggleIcon.setImageResource(isExpanded ? R.drawable.expand_less : R.drawable.expand_more);
+
+        // Toggle al hacer clic en el header
+        holder.headerLayout.setOnClickListener(v -> {
+            if (expandedPositions.contains(position)) {
+                expandedPositions.remove(position);
             } else {
-                expandedCategoryPositions.add(position);
+                expandedPositions.add(position);
             }
             notifyItemChanged(position);
         });
@@ -66,11 +71,15 @@ public class FaqCategoryAdapter extends RecyclerView.Adapter<FaqCategoryAdapter.
     static class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView categoryTitle;
         RecyclerView questionsRecycler;
+        ImageView toggleIcon;
+        View headerLayout;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryTitle = itemView.findViewById(R.id.faq_category);
             questionsRecycler = itemView.findViewById(R.id.faq_questions_recycler);
+            toggleIcon = itemView.findViewById(R.id.faq_toggle_icon);
+            headerLayout = itemView.findViewById(R.id.header);
         }
     }
 }

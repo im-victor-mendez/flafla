@@ -56,6 +56,7 @@ dependencies {
 
     /* Style */
     implementation(libs.flexbox)
+    implementation("androidx.transition:transition:1.4.1")
 
     /* Article */
     // Markdown

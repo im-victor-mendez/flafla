@@ -1,8 +1,11 @@
 package com.example.flafla.adapters;
 
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,10 +45,16 @@ public class FaqQuestionAdapter extends RecyclerView.Adapter<FaqQuestionAdapter.
         holder.answer.setText(question.getAnswer());
 
         boolean isExpanded = expandedPositions.contains(position);
+
+        // Cambia visibilidad con animación
+        TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView);
         holder.answer.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
-        holder.question.setOnClickListener(v -> {
-            if (isExpanded) {
+        // Cambia el ícono de la flecha
+        holder.arrow.setImageResource(isExpanded ? R.drawable.expand_more : R.drawable.expand_less);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (expandedPositions.contains(position)) {
                 expandedPositions.remove(position);
             } else {
                 expandedPositions.add(position);
@@ -54,6 +63,7 @@ public class FaqQuestionAdapter extends RecyclerView.Adapter<FaqQuestionAdapter.
         });
     }
 
+
     @Override
     public int getItemCount() {
         return questions.size();
@@ -61,11 +71,14 @@ public class FaqQuestionAdapter extends RecyclerView.Adapter<FaqQuestionAdapter.
 
     static class QuestionViewHolder extends RecyclerView.ViewHolder {
         TextView question, answer;
+        ImageView arrow;
 
         public QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
             question = itemView.findViewById(R.id.faq_question);
             answer = itemView.findViewById(R.id.faq_answer);
+            arrow = itemView.findViewById(R.id.faq_arrow);
         }
     }
+
 }

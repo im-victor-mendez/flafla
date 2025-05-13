@@ -51,4 +51,8 @@
     <string name="shop">Shop</string>
     <string name="people">People</string>
     <string name="contact">Contact</string>
+    <string name="toggle_icon">Toggle icon</string>
+    <string name="category">Category</string>
+    <string name="answer">Answer</string>
+    <string name="question">Question</string>
 </resources>
