@@ -56,6 +56,8 @@ dependencies {
 
     /* Style */
     implementation(libs.flexbox)
+    implementation(libs.transition)
+    implementation(libs.recyclerview)
 
     /* Article */
     // Markdown

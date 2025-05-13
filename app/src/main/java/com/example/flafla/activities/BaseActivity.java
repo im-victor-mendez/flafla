@@ -31,17 +31,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         profileBtn = findViewById(R.id.account_toolbar_button);
 
         menuBtn.setOnClickListener(v -> {
-            Log.d("BaseActivity", "Menu button clicked");
-            // TODO: Implementar la actividad del menú
-//            Intent intent = new Intent(this, MenuActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
         });
 
         searchBtn.setOnClickListener(v -> {
-            Log.d("BaseActivity", "Search button clicked");
-            // TODO: Implementar la actividad de búsqueda
-//            Intent intent = new Intent(this, SearchActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
         });
 
         cartBtn.setOnClickListener(v -> {

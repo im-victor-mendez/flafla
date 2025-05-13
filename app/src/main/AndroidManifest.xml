@@ -14,11 +14,18 @@
         android:theme="@style/Theme.Flafla"
         tools:targetApi="31">
         <activity
+            android:name=".activities.FaqActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SearchActivity"
+            android:name=".activities.MenuActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.SearchActivity"
+            android:exported="false"
+            android:theme="@style/TransparentActivity" />
         <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />

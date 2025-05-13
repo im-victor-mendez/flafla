@@ -14,6 +14,8 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
+recyclerview = "1.4.0"
+transition = "1.6.0"
 
 [libraries]
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
@@ -32,6 +34,8 @@ markwon-image-coil = { module = "io.noties.markwon:image-coil", version.ref = "i
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+transition = { module = "androidx.transition:transition", version.ref = "transition" }
+recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
