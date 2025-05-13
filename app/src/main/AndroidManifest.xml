@@ -17,6 +17,9 @@
             android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.MenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.SearchActivity"
             android:exported="false"
             android:theme="@style/TransparentActivity" />

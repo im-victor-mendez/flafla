@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_menu"
+    android:orientation="vertical"
+    android:background="@color/folded_ivory"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/logoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textColor="@color/brown"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/close"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="@color/brown" />
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header">
+
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dividerColor="@color/brown"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/menu_indicator"
+            style="@style/LocationIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:drawableStart="@drawable/bullet"
+            android:drawablePadding="10dp"
+            android:paddingTop="16dp"
+            android:text="@string/menu"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="12dp"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/menu_indicator">
+
+            <TextView
+                android:id="@+id/menu_about"
+                style="@style/MenuItemStyle"
+                android:text="@string/about"
+                android:textAllCaps="true" />
+
+            <TextView
+                android:id="@+id/menu_shop"
+                style="@style/MenuItemStyle"
+                android:text="@string/shop"
+                android:textAllCaps="true" />
+
+            <TextView
+                android:id="@+id/menu_people"
+                style="@style/MenuItemStyle"
+                android:text="@string/people"
+                android:textAllCaps="true" />
+
+            <TextView
+                android:id="@+id/menu_blog"
+                style="@style/MenuItemStyle"
+                android:text="@string/blog"
+                android:textAllCaps="true" />
+
+            <TextView
+                android:id="@+id/menu_contact"
+                style="@style/MenuItemStyle"
+                android:text="@string/contact"
+                android:textAllCaps="true" />
+
+            <TextView
+                android:id="@+id/menu_faq"
+                style="@style/MenuItemStyle"
+                android:text="@string/faq" />
+
+            <TextView
+                android:id="@+id/menu_catalogue"
+                style="@style/MenuItemStyle"
+                android:text="@string/catalogue"
+                android:textAllCaps="true" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

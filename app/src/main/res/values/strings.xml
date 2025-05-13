@@ -44,4 +44,11 @@
     <string name="product_image">Product Image</string>
     <string name="search_button">Search Button</string>
     <string name="close_search">Close Search</string>
+    <string name="about">About</string>
+    <string name="faq">FAQ</string>
+    <string name="catalogue">Catalogue</string>
+    <string name="close">Close</string>
+    <string name="shop">Shop</string>
+    <string name="people">People</string>
+    <string name="contact">Contact</string>
 </resources>
