@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.flafla.R;
-import com.example.flafla.adapters.HomeArticleAdapter;
+import com.example.flafla.adapters.ArticleAdapter;
 import com.example.flafla.models.Article;
 import com.example.flafla.models.HomePageContent;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class HomeActivity extends BaseActivity {
 
-    private HomeArticleAdapter adapter;
+    private ArticleAdapter adapter;
     private final List<Article> articleList = new ArrayList<>();
     private FirebaseFirestore db;
 
@@ -77,7 +77,7 @@ public class HomeActivity extends BaseActivity {
         // Inicializar el RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recycler_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new HomeArticleAdapter(articleList, this);
+        adapter = new ArticleAdapter(articleList, this);
         recyclerView.setAdapter(adapter);
 
         // Inicializar instancia de Firestore
