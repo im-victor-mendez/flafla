@@ -21,13 +21,13 @@ import com.google.android.flexbox.FlexboxLayout;
 import java.util.List;
 
 /**
- * <h1>Home Article Adapter</h1>
+ * <h1>Article Adapter</h1>
  * <p>
- * Adaptador para el RecyclerView que muestra una lista de artículos en la pantalla de inicio.
+ * Adaptador para el RecyclerView que muestra una lista de artículos en la pantalla.
  * <p>
  * Cada artículo se muestra con su título, una etiqueta (tag) y una imagen.
  */
-public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.ArticleViewHolder> {
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
     private final List<Article> articles;
     private final Context context;
 
@@ -37,7 +37,7 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.
      * @param articles Lista de artículos que serán mostrados en el RecyclerView.
      * @param context  Contexto de la aplicación para acceder a recursos y cargar imágenes.
      */
-    public HomeArticleAdapter(List<Article> articles, Context context) {
+    public ArticleAdapter(List<Article> articles, Context context) {
         this.articles = articles;
         this.context = context;
     }
