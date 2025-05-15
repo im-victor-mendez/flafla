@@ -16,9 +16,11 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,14 +42,9 @@ import java.util.List;
  * Los resultados se muestran en una lista con imagen, nombre y precio.
  */
 public class SearchActivity extends AppCompatActivity {
-
-    // Referencias a la interfaz de usuario
     private EditText editSearch;
-
-    // Adaptador y lista de productos filtrados
     private ProductAdapter adapter;
     private final List<Product> filteredProducts = new ArrayList<>();
-
     private CollectionReference productsRef;
 
     @Override
@@ -61,42 +58,40 @@ public class SearchActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Inicializa elementos de la interfaz
         editSearch = findViewById(R.id.edit_search);
         ImageButton btnSearch = findViewById(R.id.search);
         RecyclerView recyclerResults = findViewById(R.id.recycler_products);
         ImageButton closeButton = findViewById(R.id.button_close);
 
-
         // Configura el RecyclerView
-        recyclerResults.setLayoutManager(new LinearLayoutManager(this));
+        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
+
         adapter = new ProductAdapter(this, filteredProducts, R.layout.item_product_search);
+
+        recyclerResults.setLayoutManager(new LinearLayoutManager(this));
+        recyclerResults.addItemDecoration(divider);
         recyclerResults.setAdapter(adapter);
 
         // Inicializa Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         productsRef = db.collection("products");
 
-        // Acción al hacer click en el botón de búsqueda
         btnSearch.setOnClickListener(v -> performSearch());
-
-        // Acción al hacer click en el botón de cerrar
         closeButton.setOnClickListener(v -> finish());
 
         // Acción al presionar "Enter" en el teclado virtual
         editSearch.setOnEditorActionListener((v, actionId, event) -> {
-            boolean handled = false; // Flag to indicate if the event is consumed
+            boolean handled = false;
 
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
                 performSearch();
-                handled = true; // Consume the event
+                handled = true;
             } else if (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                // Check for null event before accessing its methods
                 performSearch();
-                handled = true; // Consume the event
+                handled = true;
             }
-
-            return handled; // Return true if the event was handled, false otherwise
+            return handled;
         });
     }
 
@@ -114,7 +109,8 @@ public class SearchActivity extends AppCompatActivity {
             return;
         }
 
-        filteredProducts.clear(); // Limpia resultados anteriores
+        // Limpia resultados anteriores
+        filteredProducts.clear();
 
         // Obtiene todos los productos desde la base de datos
         productsRef.get()
