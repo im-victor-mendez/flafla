@@ -2,23 +2,24 @@ package com.example.flafla.activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.bumptech.glide.Glide;
 import com.example.flafla.R;
 import com.example.flafla.adapters.ImageCarouselAdapter;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,39 +30,57 @@ import java.util.Map;
  * <p>
  * Carga la información del producto desde Firestore y la muestra en la interfaz de usuario.
  */
-public class ProductDetailActivity extends AppCompatActivity {
+public class ProductDetailActivity extends BaseActivity {
     public static final String EXTRA_PRODUCT = "PRODUCT_ID";
     private FirebaseFirestore db;
 
     private LinearLayout specifications, termsConditions;
-    private ImageView productImage;
-    private TextView productName, productPrice, productDescription;
-    private Button addToBagButton;
+    private TextView indicator;
+    private TextView productName;
+    private TextView productPrice;
+    private TextView productDescription;
 
     private ViewPager2 viewPager;
-    private Button btnToggleSpecs, btnToggleTerms;
+    private ImageButton toggleSpecsBtn, toggleTermsBtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_detail);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_product_detail), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        setupToolbar();
 
         db = FirebaseFirestore.getInstance();
 
-        viewPager = findViewById(R.id.viewPager);
+        TextView back = findViewById(R.id.back_button);
+
+        back.setOnClickListener(v -> finish());
+
+        indicator = findViewById(R.id.product_indicator);
+        viewPager = findViewById(R.id.product_images);
         productName = findViewById(R.id.text_product_name);
         productPrice = findViewById(R.id.text_product_price);
         productDescription = findViewById(R.id.text_product_description);
-        addToBagButton = findViewById(R.id.btn_add_to_bag);
 
         specifications = findViewById(R.id.layout_specifications);
         termsConditions = findViewById(R.id.layout_terms);
-        btnToggleSpecs = findViewById(R.id.btn_toggle_specifications);
-        btnToggleTerms = findViewById(R.id.btn_toggle_terms);
+        ConstraintLayout specsLayout = findViewById(R.id.specifications_layout);
+        ConstraintLayout termsLayout = findViewById(R.id.terms_layout);
+        toggleSpecsBtn = findViewById(R.id.toggle_specifications_button);
+        toggleTermsBtn = findViewById(R.id.toggle_terms_button);
 
-        btnToggleSpecs.setOnClickListener(v -> toggleVisibility(specifications, btnToggleSpecs, "especificaciones"));
-        btnToggleTerms.setOnClickListener(v -> toggleVisibility(termsConditions, btnToggleTerms, "términos y condiciones"));
+        specsLayout.setOnClickListener(v -> toggleVisibility(specifications, toggleSpecsBtn));
+        termsLayout.setOnClickListener(v -> toggleVisibility(termsConditions, toggleTermsBtn));
+
+        toggleSpecsBtn.setOnClickListener(v -> toggleVisibility(specifications, toggleSpecsBtn));
+        toggleTermsBtn.setOnClickListener(v -> toggleVisibility(termsConditions, toggleTermsBtn));
 
 
         String productId = getIntent().getStringExtra(EXTRA_PRODUCT);
@@ -103,7 +122,6 @@ public class ProductDetailActivity extends AppCompatActivity {
      * <p>
      * Metodo que maneja el fallo en la consulta a Firestore.
      * <p>
-     * Puedes agregar una lógica de manejo de errores aquí, como mostrar un mensaje de error.
      *
      * @param exception La excepción que ocurrió al intentar recuperar el producto.
      */
@@ -120,6 +138,7 @@ public class ProductDetailActivity extends AppCompatActivity {
      * @param document El documento de Firestore que contiene los datos del producto.
      */
     private void showProduct(@NonNull DocumentSnapshot document) {
+        String category = document.getString("category");
         String name = document.getString("name");
         Double price = document.getDouble("price");
         String description = document.getString("description");
@@ -127,8 +146,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         Map<String, String> specsMap = (Map<String, String>) document.get("specifications");
         Map<String, String> termsMap = (Map<String, String>) document.get("termsAndConditions");
 
+        indicator.setText("Shop, ".toUpperCase() + category);
         productName.setText(name);
-        productPrice.setText(String.format("$%.2f", price));
+        productPrice.setText(String.format("$%.0f", price));
         productDescription.setText(description);
 
         DotsIndicator dotsIndicator = findViewById(R.id.dots_indicator);
@@ -153,25 +173,51 @@ public class ProductDetailActivity extends AppCompatActivity {
      * @param map       El mapa que contiene las claves y valores que se desean mostrar.
      */
     private void displayKeyValues(LinearLayout container, Map<String, String> map) {
-        container.removeAllViews(); // Limpiar antes de llenar
+        container.removeAllViews();
         if (map == null || map.isEmpty()) return;
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
-            TextView textView = new TextView(this);
-            textView.setText(entry.getKey() + ": " + entry.getValue());
-            textView.setTextSize(14);
-            textView.setPadding(8, 8, 8, 8);
-            container.addView(textView);
+            // Crear un LinearLayout horizontal
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            row.setPadding(8, 8, 8, 8);
+
+            // Crear TextView para la clave (key)
+            TextView keyView = new TextView(this);
+            keyView.setText(entry.getKey() + ": ");
+            keyView.setTextColor(getColor(R.color.brown));
+            keyView.setTextSize(14);
+            keyView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            // Crear TextView para el valor (value)
+            TextView valueView = new TextView(this);
+            valueView.setText(entry.getValue());
+            valueView.setTextColor(getColor(R.color.brown_toned));
+            valueView.setTextSize(14);
+            valueView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            // Agregar ambos TextView al row
+            row.addView(keyView);
+            row.addView(valueView);
+
+            // Agregar el row al contenedor principal
+            container.addView(row);
         }
     }
 
-    private void toggleVisibility(LinearLayout layout, Button button, String label) {
+
+    private void toggleVisibility(LinearLayout layout, ImageButton button) {
         if (layout.getVisibility() == View.VISIBLE) {
             layout.setVisibility(View.GONE);
-            button.setText("Mostrar " + label);
+            button.setImageResource(R.drawable.add);
         } else {
             layout.setVisibility(View.VISIBLE);
-            button.setText("Ocultar " + label);
+            button.setImageResource(R.drawable.remove);
         }
     }
 

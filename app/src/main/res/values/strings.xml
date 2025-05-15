@@ -55,4 +55,8 @@
     <string name="category">Category</string>
     <string name="answer">Answer</string>
     <string name="question">Question</string>
+    <string name="shop_category">Shop, CATEGORY</string>
+    <string name="description">Description</string>
+    <string name="toggle_specification_button">Toggle Specification Button</string>
+    <string name="toggle_terms_and_condition_button">Toggle Terms and Condition Button</string>
 </resources>
