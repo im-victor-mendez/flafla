@@ -59,4 +59,5 @@
     <string name="description">Description</string>
     <string name="toggle_specification_button">Toggle Specification Button</string>
     <string name="toggle_terms_and_condition_button">Toggle Terms and Condition Button</string>
+    <string name="category_name">Category Name</string>
 </resources>
