@@ -51,8 +51,10 @@ dependencies {
     implementation(libs.firebase.firestore)
     // Authentication
     implementation(libs.firebase.auth)
+
     //Glide
     implementation(libs.glide)
+    implementation(libs.dotsindicator)
 
     /* Style */
     implementation(libs.flexbox)
