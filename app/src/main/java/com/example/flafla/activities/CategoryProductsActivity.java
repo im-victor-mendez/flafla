@@ -60,6 +60,9 @@ public class CategoryProductsActivity extends BaseActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        TextView back = findViewById(R.id.back);
+        back.setOnClickListener(v -> finish());
+
         RecyclerView recyclerView = findViewById(R.id.recycler_products);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new ProductAdapter(this, products, R.layout.item_product);

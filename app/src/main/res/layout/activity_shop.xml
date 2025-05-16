@@ -35,7 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="12dp" />
 
-        <include layout="@layout/back_button" />
+        <include
+            android:id="@+id/back"
+            layout="@layout/back_button" />
 
 
         <androidx.recyclerview.widget.RecyclerView

@@ -2,6 +2,7 @@ package com.example.flafla.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -37,6 +38,9 @@ public class ShopActivity extends BaseActivity {
         });
 
         setupToolbar();
+
+        TextView backBtn = findViewById(R.id.back);
+        backBtn.setOnClickListener(v -> finish());
 
         recyclerView = findViewById(R.id.recycler_categories);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
