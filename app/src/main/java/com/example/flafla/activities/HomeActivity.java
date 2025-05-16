@@ -75,7 +75,7 @@ public class HomeActivity extends BaseActivity {
         setupToolbar();
 
         // Inicializar el RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recycler_home);
+        RecyclerView recyclerView = findViewById(R.id.recycler_blog);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ArticleAdapter(articleList, this);
         recyclerView.setAdapter(adapter);

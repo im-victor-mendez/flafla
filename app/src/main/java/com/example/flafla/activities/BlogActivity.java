@@ -39,7 +39,9 @@ public class BlogActivity extends BaseActivity {
 
         setupToolbar();
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_home);
+        findViewById(R.id.back).setOnClickListener(v -> finish());
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_blog);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ArticleAdapter(articleList, this);
         recyclerView.setAdapter(adapter);
@@ -66,6 +68,8 @@ public class BlogActivity extends BaseActivity {
         Article article = doc.toObject(Article.class);
         if (article != null) {
             articleList.add(article);
+            Log.d("BlogActivity", "Added article: " + article.getTitle());
+            Log.d("BlogActivity", "Article list size: " + articleList.size());
             adapter.notifyItemInserted(articleList.size() - 1);
         }
     }
