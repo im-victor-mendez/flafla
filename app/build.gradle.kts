@@ -42,12 +42,28 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // Firebase BoM
+    /* Firebase */
+    // BoM
     implementation(platform(libs.firebase.bom))
-    // Firebase Analytics
+    // Analytics
     implementation(libs.firebase.analytics)
-    // Firestore Database
+    // Database
     implementation(libs.firebase.firestore)
-    // Firebase Authentication
+    // Authentication
     implementation(libs.firebase.auth)
+
+    //Glide
+    implementation(libs.glide)
+    implementation(libs.dotsindicator)
+
+    /* Style */
+    implementation(libs.flexbox)
+    implementation(libs.transition)
+    implementation(libs.recyclerview)
+
+    /* Article */
+    // Markdown
+    implementation(libs.core)
+    implementation(libs.coil)
+    implementation(libs.markwon.image.coil)
 }

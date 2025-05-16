@@ -1,19 +1,25 @@
 package com.example.flafla.activities;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.flafla.R;
+import com.example.flafla.adapters.ImageCarouselAdapter;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,25 +30,60 @@ import java.util.Map;
  * <p>
  * Carga la información del producto desde Firestore y la muestra en la interfaz de usuario.
  */
-public class ProductDetailActivity extends AppCompatActivity {
+public class ProductDetailActivity extends BaseActivity {
+    public static final String EXTRA_PRODUCT = "PRODUCT_ID";
     private FirebaseFirestore db;
 
     private LinearLayout specifications, termsConditions;
-    private ImageView productImage;
-    private TextView productName, productPrice, productDescription;
-    private Button addToBagButton;
+    private TextView indicator;
+    private TextView productName;
+    private TextView productPrice;
+    private TextView productDescription;
+
+    private ViewPager2 viewPager;
+    private ImageButton toggleSpecsBtn, toggleTermsBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_detail);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_product_detail), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        setupToolbar();
 
         db = FirebaseFirestore.getInstance();
 
-        // Obtener el ID del producto pasado a través de un Intent
-        String productId = getIntent().getStringExtra(getString(R.string.product_id));
+        TextView back = findViewById(R.id.back_button);
 
-        // Cargar producto desde Firestore
+        back.setOnClickListener(v -> finish());
+
+        indicator = findViewById(R.id.product_indicator);
+        viewPager = findViewById(R.id.product_images);
+        productName = findViewById(R.id.text_product_name);
+        productPrice = findViewById(R.id.text_product_price);
+        productDescription = findViewById(R.id.text_product_description);
+
+        specifications = findViewById(R.id.layout_specifications);
+        termsConditions = findViewById(R.id.layout_terms);
+        ConstraintLayout specsLayout = findViewById(R.id.specifications_layout);
+        ConstraintLayout termsLayout = findViewById(R.id.terms_layout);
+        toggleSpecsBtn = findViewById(R.id.toggle_specifications_button);
+        toggleTermsBtn = findViewById(R.id.toggle_terms_button);
+
+        specsLayout.setOnClickListener(v -> toggleVisibility(specifications, toggleSpecsBtn));
+        termsLayout.setOnClickListener(v -> toggleVisibility(termsConditions, toggleTermsBtn));
+
+        toggleSpecsBtn.setOnClickListener(v -> toggleVisibility(specifications, toggleSpecsBtn));
+        toggleTermsBtn.setOnClickListener(v -> toggleVisibility(termsConditions, toggleTermsBtn));
+
+
+        String productId = getIntent().getStringExtra(EXTRA_PRODUCT);
         loadProduct(productId);
     }
 
@@ -66,7 +107,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     /**
      * <h1>On Success</h1>
      * <p>
-     * Método que maneja la respuesta exitosa de la consulta a Firestore.
+     * Metodo que maneja la respuesta exitosa de la consulta a Firestore.
      * Si el documento existe, se procede a mostrar la información.
      *
      * @param documentSnapshot El documento recuperado de Firestore.
@@ -79,14 +120,12 @@ public class ProductDetailActivity extends AppCompatActivity {
     /**
      * <h1>On Failure</h1>
      * <p>
-     * Método que maneja el fallo en la consulta a Firestore.
+     * Metodo que maneja el fallo en la consulta a Firestore.
      * <p>
-     * Puedes agregar una lógica de manejo de errores aquí, como mostrar un mensaje de error.
      *
      * @param exception La excepción que ocurrió al intentar recuperar el producto.
      */
     private void onFailure(Exception exception) {
-        // Aquí podrías agregar una acción en caso de error, como mostrar un mensaje al usuario.
     }
 
     /**
@@ -99,38 +138,27 @@ public class ProductDetailActivity extends AppCompatActivity {
      * @param document El documento de Firestore que contiene los datos del producto.
      */
     private void showProduct(@NonNull DocumentSnapshot document) {
-        // Obtener los datos del producto desde el documento de Firestore
-        String nameDocument = getString(R.string.name_document_snapshot);
-        String name = document.getString(nameDocument);
+        String category = document.getString("category");
+        String name = document.getString("name");
+        Double price = document.getDouble("price");
+        String description = document.getString("description");
+        List<String> images = (List<String>) document.get("images");
+        Map<String, String> specsMap = (Map<String, String>) document.get("specifications");
+        Map<String, String> termsMap = (Map<String, String>) document.get("termsAndConditions");
 
-        String priceDocument = getString(R.string.price_document_snapshot);
-        Double price = document.getDouble(priceDocument);
-
-        String descriptionDocument = getString(R.string.description_document_snapshot);
-        String description = document.getString(descriptionDocument);
-
-        // Obtener las imágenes del producto (pueden ser varias imágenes)
-        String imagesDocument = getString(R.string.images_document_snapshot);
-        List<String> images;
-
-        // Obtener especificaciones y términos del producto
-        String specificationsDocument = getString(R.string.specifications_document_snapshot);
-        Map<String, String> specsMap = (Map<String, String>) document.get(specificationsDocument);
-
-        String termsAndConditionsDocument = getString(R.string.terms_and_conditions_document_snapshot);
-        Map<String, String> termsMap = (Map<String, String>) document.get(termsAndConditionsDocument);
-
-        // Establecer los valores en los TextViews correspondientes
+        indicator.setText("Shop, ".toUpperCase() + category);
         productName.setText(name);
-        productPrice.setText(String.format("$%.2f", price));
+        productPrice.setText(String.format("$%.0f", price));
         productDescription.setText(description);
 
-        if (document.get(imagesDocument) != null)
-            images = (List<String>) document.get(imagesDocument);
+        DotsIndicator dotsIndicator = findViewById(R.id.dots_indicator);
 
-        else images = new ArrayList<>();
+        // Carrusel de imágenes
+        ImageCarouselAdapter adapter = new ImageCarouselAdapter(this, images);
+        viewPager.setAdapter(adapter);
 
-        // Mostrar las especificaciones y términos en sus respectivos contenedores
+        dotsIndicator.setViewPager2(viewPager);
+
         displayKeyValues(specifications, specsMap);
         displayKeyValues(termsConditions, termsMap);
     }
@@ -138,32 +166,59 @@ public class ProductDetailActivity extends AppCompatActivity {
     /**
      * <h1>Display Key Values</h1>
      * <p>
-     * Este método se encarga de agregar un TextView dinámicamente para cada par clave-valor
+     * Este metodo se encarga de agregar un TextView dinámicamente para cada par clave-valor
      * en el mapa proporcionado, y los agrega a un contenedor LinearLayout.
      *
      * @param container El LinearLayout donde se agregarán los TextViews.
      * @param map       El mapa que contiene las claves y valores que se desean mostrar.
      */
     private void displayKeyValues(LinearLayout container, Map<String, String> map) {
-        // Verificar si el mapa es null o está vacío, en cuyo caso no se hace nada
+        container.removeAllViews();
         if (map == null || map.isEmpty()) return;
 
-        // Iterar sobre el mapa para agregar un TextView por cada par key-value
         for (Map.Entry<String, String> entry : map.entrySet()) {
+            // Crear un LinearLayout horizontal
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            row.setPadding(8, 8, 8, 8);
 
-            // Crear un nuevo TextView para mostrar cada clave-valor
-            TextView textView = new TextView(this);
+            // Crear TextView para la clave (key)
+            TextView keyView = new TextView(this);
+            keyView.setText(entry.getKey() + ": ");
+            keyView.setTextColor(getColor(R.color.brown));
+            keyView.setTextSize(14);
+            keyView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            // Establecer el texto del TextView con el formato adecuado ("key: value")
-            String text = String.format("%s: %s", entry.getKey(), entry.getValue());
-            textView.setText(text);
+            // Crear TextView para el valor (value)
+            TextView valueView = new TextView(this);
+            valueView.setText(entry.getValue());
+            valueView.setTextColor(getColor(R.color.brown_toned));
+            valueView.setTextSize(14);
+            valueView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            // Personalización del TextView (opcional)
-            textView.setTextSize(16); // Tamaño de la fuente
-            textView.setPadding(0, 10, 0, 10); // Espaciado entre los TextViews
+            // Agregar ambos TextView al row
+            row.addView(keyView);
+            row.addView(valueView);
 
-            // Agregar el nuevo TextView al contenedor LinearLayout
-            container.addView(textView);
+            // Agregar el row al contenedor principal
+            container.addView(row);
         }
     }
+
+
+    private void toggleVisibility(LinearLayout layout, ImageButton button) {
+        if (layout.getVisibility() == View.VISIBLE) {
+            layout.setVisibility(View.GONE);
+            button.setImageResource(R.drawable.add);
+        } else {
+            layout.setVisibility(View.VISIBLE);
+            button.setImageResource(R.drawable.remove);
+        }
+    }
+
 }

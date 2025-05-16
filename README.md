@@ -120,6 +120,4 @@ Toda documentación se encuentra en la carpeta /docs, incluyendo:
 ## 👥 Colaboradores
 Victor Mendez - Developer
 
-Diego Vargas - Developer
-
 Jordy Colin - Developer
