@@ -2,9 +2,13 @@ package com.example.flafla.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>
  * 4. Despliega los productos en un RecyclerView de 2 columnas.
  */
-public class CategoryProductsActivity extends AppCompatActivity {
+public class CategoryProductsActivity extends BaseActivity {
 
     public static final String EXTRA_CATEGORY = "CATEGORY";
 
@@ -44,11 +48,19 @@ public class CategoryProductsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_category_products);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_category_products), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        setupToolbar();
 
         db = FirebaseFirestore.getInstance();
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_products);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new ProductAdapter(this, products, R.layout.item_product);
         recyclerView.setAdapter(adapter);
@@ -56,6 +68,9 @@ public class CategoryProductsActivity extends AppCompatActivity {
 
         String category = getIntent().getStringExtra(EXTRA_CATEGORY);
         fetchCategoryProducts(category);
+
+        TextView indicator = findViewById(R.id.indicator);
+        indicator.setText("Shop . " + category);
     }
 
     /**
