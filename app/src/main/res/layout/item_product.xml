@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <!-- Imagen del producto -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp">
+
     <ImageView
         android:id="@+id/image_product"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:clickable="true"
+        android:contentDescription="@string/product_image"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Nombre del producto -->
     <TextView
         android:id="@+id/text_product_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp"
+        android:text="@string/product_name"
+        android:textColor="@color/brown"
+        app:flow_wrapMode="aligned"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/text_product_price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_product" />
 
-    <!-- Precio del producto -->
     <TextView
         android:id="@+id/text_product_price"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</androidx.cardview.widget.CardView>
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp"
+        android:text="@string/_99"
+        android:textColor="@color/brown"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_product" />
+</androidx.constraintlayout.widget.ConstraintLayout>

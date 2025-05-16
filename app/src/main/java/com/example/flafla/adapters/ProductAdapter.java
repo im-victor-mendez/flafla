@@ -67,6 +67,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             intent.putExtra(ProductDetailActivity.EXTRA_PRODUCT, product.getId());
             context.startActivity(intent);
         });
+
+        holder.image.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ProductDetailActivity.class);
+            intent.putExtra(ProductDetailActivity.EXTRA_PRODUCT, product.getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override

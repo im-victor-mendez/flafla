@@ -129,7 +129,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
-            image = itemView.findViewById(R.id.image);
+            image = itemView.findViewById(R.id.category_image);
             title = itemView.findViewById(R.id.title);
             tagsContainer = itemView.findViewById(R.id.article_tags_container);
         }
