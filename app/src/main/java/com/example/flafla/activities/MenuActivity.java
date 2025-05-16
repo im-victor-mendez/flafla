@@ -33,9 +33,15 @@ public class MenuActivity extends AppCompatActivity {
         // Manejo de clics del menú
         // TODO: Replace with navigation feature
         findViewById(R.id.menu_about).setOnClickListener(v -> showToast("ABOUT"));
-        findViewById(R.id.menu_shop).setOnClickListener(v -> showToast("SHOP"));
+        findViewById(R.id.menu_shop).setOnClickListener(v -> {
+            startActivity(new Intent(this, ShopActivity.class));
+            finish();
+        });
         findViewById(R.id.menu_people).setOnClickListener(v -> showToast("PEOPLE"));
-        findViewById(R.id.menu_blog).setOnClickListener(v -> showToast("BLOG"));
+        findViewById(R.id.menu_blog).setOnClickListener(v -> {
+            startActivity(new Intent(this, BlogActivity.class));
+            finish();
+        });
         findViewById(R.id.menu_contact).setOnClickListener(v -> showToast("CONTACT"));
         findViewById(R.id.menu_faq).setOnClickListener(v -> {
             startActivity(new Intent(this, FaqActivity.class));
