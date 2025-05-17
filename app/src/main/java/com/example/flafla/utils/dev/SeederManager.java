@@ -19,7 +19,9 @@ public class SeederManager {
                 Log.d("SeederManager", "Datos de desarrollo insertados correctamente.");
             };
 
-            DevTools.seedAll();
+            new FirestoreDevSeeder().seedAll(onComplete);
         }
+
+        Log.d("SeederManager", "Datos de desarrollo ya insertados.");
     }
 }

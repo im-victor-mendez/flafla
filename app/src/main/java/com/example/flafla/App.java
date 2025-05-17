@@ -3,7 +3,6 @@ package com.example.flafla;
 import android.app.Application;
 
 import com.example.flafla.utils.dev.SeederManager;
-import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 
 public class App extends Application {
@@ -14,10 +13,7 @@ public class App extends Application {
 
         // Initialize Firebase
         FirebaseApp.initializeApp(this);
-
-        if (BuildConfig.DEBUG) {
-            SeederManager.runOnce(this);
-        }
-
+        
+        SeederManager.runOnce(this);
     }
 }
