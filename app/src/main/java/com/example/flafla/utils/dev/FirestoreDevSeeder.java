@@ -3,14 +3,20 @@ package com.example.flafla.utils.dev;
 import com.example.flafla.models.AvailableItem;
 import com.example.flafla.models.Cart;
 import com.example.flafla.models.ProductPromotion;
+import com.example.flafla.models.PromotionCode;
 import com.example.flafla.models.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class FirestoreDevSeeder {
@@ -19,6 +25,7 @@ public class FirestoreDevSeeder {
     public void seedAll(Runnable onComplete) {
         seedUsers(onComplete);
         seedProductPromotions(onComplete);
+        seedPromotionCodes(onComplete);
         seedAvailableItems(onComplete);
     }
 
@@ -70,7 +77,6 @@ public class FirestoreDevSeeder {
 
             Timestamp validTo = new Timestamp(futureMillis / 1000, 0); // segundos y nanosegundos
 
-
             promotions.add(new ProductPromotion.Builder()
                     .setProductId("product" + i)
                     .setType(ProductPromotion.Type.DISCOUNT)
@@ -95,6 +101,54 @@ public class FirestoreDevSeeder {
         }
     }
 
+    public static void seedPromotionCodes(Runnable onComplete) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Códigos de promoción de ejemplo
+        Timestamp now = Timestamp.now();
+        Date nextWeekDate = new Date(now.toDate().getTime() + 7L * 24 * 60 * 60 * 1000);
+        Timestamp nextWeek = new Timestamp(nextWeekDate);
+
+        List<PromotionCode> codes = Arrays.asList(
+                new PromotionCode.Builder()
+                        .setCode("SPRING20")
+                        .setDiscountPercent(20)
+                        .setValidFrom(now)
+                        .setValidTo(nextWeek)
+                        .setActive(true)
+                        .build(),
+                new PromotionCode.Builder()
+                        .setCode("WELCOME15")
+                        .setDiscountPercent(15)
+                        .setValidFrom(now)
+                        .setValidTo(nextWeek)
+                        .setActive(true)
+                        .build(),
+                new PromotionCode.Builder()
+                        .setCode("SUMMER10")
+                        .setDiscountPercent(10)
+                        .setValidFrom(now)
+                        .setValidTo(nextWeek)
+                        .setActive(true)
+                        .build()
+        );
+
+        // Guardar en store/promotions/codes
+        Map<String, Object> data = new HashMap<>();
+        data.put("codes", codes);
+
+        db.collection("store")
+                .document("promotions")
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener(unused -> {
+                    System.out.println("Promotion codes seeded successfully.");
+
+                    onComplete.run();
+                })
+                .addOnFailureListener(e -> {
+                    System.err.println("Error seeding promotion codes: " + e.getMessage());
+                });
+    }
 
     public void seedAvailableItems(Runnable onComplete) {
         CollectionReference availableItemsRef = db.collection("store")
