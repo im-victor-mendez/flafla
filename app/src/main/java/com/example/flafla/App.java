@@ -1,11 +1,12 @@
 package com.example.flafla;
 
 import android.app.Application;
+
+import com.example.flafla.utils.dev.SeederManager;
+import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class App extends Application {
-    private FirebaseFirestore db;
 
     @Override
     public void onCreate() {
@@ -14,10 +15,9 @@ public class App extends Application {
         // Initialize Firebase
         FirebaseApp.initializeApp(this);
 
-        db = FirebaseFirestore.getInstance();
-    }
+        if (BuildConfig.DEBUG) {
+            SeederManager.runOnce(this);
+        }
 
-    public FirebaseFirestore getFirestore() {
-        return db;
     }
 }
