@@ -60,4 +60,13 @@
     <string name="toggle_specification_button">Toggle Specification Button</string>
     <string name="toggle_terms_and_condition_button">Toggle Terms and Condition Button</string>
     <string name="category_name">Category Name</string>
+    <string name="phone">Phone</string>
+    <string name="opening_hours">Opening Hours</string>
+    <string name="email_support">support@flafla.com</string>
+    <string name="address">Address</string>
+    <string name="email">Email</string>
+    <string name="phone_value">+52 55 1234 5678</string>
+    <string name="weekday_hours">Weekday Hours</string>
+    <string name="saturday_hours">Saturday Hours</string>
+    <string name="sunday_hours">Sunday Hours</string>
 </resources>
