@@ -4,6 +4,7 @@ import com.example.flafla.models.AvailableItem;
 import com.example.flafla.models.Cart;
 import com.example.flafla.models.ProductPromotion;
 import com.example.flafla.models.PromotionCode;
+import com.example.flafla.models.Review;
 import com.example.flafla.models.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class FirestoreDevSeeder {
@@ -24,6 +26,7 @@ public class FirestoreDevSeeder {
 
     public void seedAll(Runnable onComplete) {
         seedUsers(onComplete);
+        seedReviewsToSomeProducts(onComplete);
         seedProductPromotions(onComplete);
         seedPromotionCodes(onComplete);
         seedAvailableItems(onComplete);
@@ -59,6 +62,36 @@ public class FirestoreDevSeeder {
                             onComplete.run();
                         }
                     });
+        }
+    }
+
+    public void seedReviewsToSomeProducts(Runnable onComplete) {
+        Random random = new Random();
+
+        for (int i = 1; i <= 5; i++) {
+            String productId = "product" + i;
+
+            // Solo agrega reviews a algunos productos (ej. probabilidad 60%)
+            if (random.nextBoolean() || random.nextInt(3) == 0) {
+                int numberOfReviews = 1 + random.nextInt(4); // 1 a 4 reviews
+
+                for (int j = 0; j < numberOfReviews; j++) {
+                    Review review = new Review.Builder()
+                            .setAuthor_id("user" + random.nextInt(10)) // author_id: user0 - user9
+                            .setCreated_at(new Date(System.currentTimeMillis() - random.nextInt(1000000000)))
+                            .setContent("Reseña aleatoria #" + (j + 1) + " para " + productId)
+                            .setRating(1 + random.nextInt(4)) // 0 a 4
+                            .build();
+
+                    db.collection("products")
+                            .document(productId)
+                            .collection("reviews")
+                            .add(review)
+                            .addOnCompleteListener(docRef -> {
+                                onComplete.run();
+                            });
+                }
+            }
         }
     }
 

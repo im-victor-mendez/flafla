@@ -69,4 +69,10 @@
     <string name="weekday_hours">Weekday Hours</string>
     <string name="saturday_hours">Saturday Hours</string>
     <string name="sunday_hours">Sunday Hours</string>
+    <string name="author">Author</string>
+    <string name="rating">Rating</string>
+    <string name="content">Content</string>
+    <string name="date">Date</string>
+    <string name="author_avatar">Author Avatar</string>
+    <string name="customer_reviews">Customer Reviews</string>
 </resources>

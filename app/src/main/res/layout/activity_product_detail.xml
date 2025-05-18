@@ -237,6 +237,31 @@
                 android:layout_marginVertical="12dp"
                 app:dividerColor="@color/brown_light" />
 
+            <!-- Reviews -->
+
+            <TextView
+                android:id="@+id/review_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/customer_reviews"
+                android:textAllCaps="true"
+                android:textColor="@color/brown" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/review_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="12dp"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/review_divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginVertical="12dp"
+                app:dividerColor="@color/brown_light" />
+
             <!-- Add to Bag -->
 
             <Button

@@ -1,10 +1,12 @@
 package com.example.flafla.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -12,14 +14,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.flafla.R;
 import com.example.flafla.adapters.ImageCarouselAdapter;
+import com.example.flafla.adapters.ReviewAdapter;
+import com.example.flafla.models.Review;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -150,6 +158,36 @@ public class ProductDetailActivity extends BaseActivity {
         productName.setText(name);
         productPrice.setText(String.format("$%.0f", price));
         productDescription.setText(description);
+
+        RecyclerView recyclerView = findViewById(R.id.review_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        List<Review> reviewList = new ArrayList<>();
+        ReviewAdapter reviewAdapter = new ReviewAdapter(reviewList);
+        recyclerView.setAdapter(reviewAdapter);
+        document.getReference()
+                .collection("reviews")
+                .orderBy("created_at", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        Review review = doc.toObject(Review.class);
+                        reviewList.add(review);
+                    }
+
+                    if (reviewList.isEmpty()) {
+                        findViewById(R.id.review_title).setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
+                        findViewById(R.id.review_divider).setVisibility(View.GONE);
+                    }
+
+                    reviewAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al cargar reseñas", Toast.LENGTH_SHORT).show();
+                    Log.e("Firestore", "Error", e);
+                });
+
 
         DotsIndicator dotsIndicator = findViewById(R.id.dots_indicator);
 

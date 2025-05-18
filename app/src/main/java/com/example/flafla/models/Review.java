@@ -4,24 +4,18 @@ import java.util.Date;
 
 public class Review {
     public static class Builder {
-        private int authorId;
-        private Date createdAt;
-        private int entityId;
+        private String author_id;
+        private Date created_at;
         private String content;
         private int rating;
 
-        public Builder setAuthorId(int authorId) {
-            this.authorId = authorId;
+        public Builder setAuthor_id(String author_id) {
+            this.author_id = author_id;
             return this;
         }
 
-        public Builder setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public Builder setEntityId(int entityId) {
-            this.entityId = entityId;
+        public Builder setCreated_at(Date created_at) {
+            this.created_at = created_at;
             return this;
         }
 
@@ -31,7 +25,7 @@ public class Review {
         }
 
         public Builder setRating(int rating) {
-            if (rating < 0 || rating >= 5) {
+            if (rating < 1 || rating > 5) {
                 throw new IllegalArgumentException("Rating must be between 0 and 5.");
             }
             this.rating = rating;
@@ -43,37 +37,29 @@ public class Review {
         }
     }
 
-    private final int authorId;
-    private final Date createdAt;
-    private final int entityId;
-    private final String content;
+    private String author_id;
+    private Date created_at;
+    private String content;
 
-    private final int rating;
+    private int rating;
+
+    public Review() {
+        // Requerido por Firestore
+    }
 
     private Review(Builder builder) {
-        this.authorId = builder.authorId;
-        this.createdAt = builder.createdAt;
-        this.entityId = builder.entityId;
+        this.author_id = builder.author_id;
+        this.created_at = builder.created_at;
         this.content = builder.content;
         this.rating = builder.rating;
     }
 
-    @Override
-    public String toString() {
-        return "Review [authorId=" + authorId + ", createdAt=" + createdAt + ", entityId=" + entityId + ", content="
-                + content + ", rating=" + rating + "]";
+    public String getAuthor_id() {
+        return author_id;
     }
 
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public int getEntityId() {
-        return entityId;
+    public Date getCreated_at() {
+        return created_at;
     }
 
     public String getContent() {
