@@ -21,9 +21,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.flafla.R;
+import com.example.flafla.models.User;
 import com.example.flafla.utils.AuthCallback;
 import com.example.flafla.utils.AuthManager;
 import com.example.flafla.utils.AuthParams;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * <h1>Auth Activity</h1>
@@ -189,6 +191,10 @@ public class AuthActivity extends AppCompatActivity {
         authManager.createAccount(authParams, new AuthCallback() {
             @Override
             public void onSuccess(String message) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                User user = new User.Builder().setEmail(email).setId(authManager.getCurrentUserId()).build();
+                db.collection("users").document(user.getId()).set(user);
+
                 // Si la cuenta se crea exitosamente, muestra un mensaje y navega a la actividad principal.
                 Toast.makeText(AuthActivity.this, message, Toast.LENGTH_SHORT).show();
                 goToHomeActivity();

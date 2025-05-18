@@ -81,6 +81,10 @@ public class AuthManager {
         return auth.getCurrentUser() != null;
     }
 
+    public String getCurrentUserId() {
+        return Objects.requireNonNull(auth.getCurrentUser()).getUid();
+    }
+
     public boolean isSignedAsGuest() {
         return Objects.requireNonNull(auth.getCurrentUser()).isAnonymous();
     }
