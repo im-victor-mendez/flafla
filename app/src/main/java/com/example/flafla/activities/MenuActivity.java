@@ -42,7 +42,10 @@ public class MenuActivity extends AppCompatActivity {
             startActivity(new Intent(this, BlogActivity.class));
             finish();
         });
-        findViewById(R.id.menu_contact).setOnClickListener(v -> showToast("CONTACT"));
+        findViewById(R.id.menu_contact).setOnClickListener(v -> {
+            startActivity(new Intent(this, ContactActivity.class));
+            finish();
+        });
         findViewById(R.id.menu_faq).setOnClickListener(v -> {
             startActivity(new Intent(this, FaqActivity.class));
             finish();

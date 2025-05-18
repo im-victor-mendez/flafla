@@ -52,6 +52,9 @@ dependencies {
     // Authentication
     implementation(libs.firebase.auth)
 
+    /* Google */
+    implementation(libs.play.services.maps)
+
     //Glide
     implementation(libs.glide)
     implementation(libs.dotsindicator)
