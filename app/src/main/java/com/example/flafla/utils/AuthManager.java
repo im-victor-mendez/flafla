@@ -3,6 +3,8 @@ package com.example.flafla.utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class AuthManager {
 
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -77,5 +79,9 @@ public class AuthManager {
 
     public boolean isUserSignedIn() {
         return auth.getCurrentUser() != null;
+    }
+
+    public boolean isSignedAsGuest() {
+        return Objects.requireNonNull(auth.getCurrentUser()).isAnonymous();
     }
 }

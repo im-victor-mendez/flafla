@@ -2,14 +2,15 @@ package com.example.flafla.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.flafla.R;
+import com.example.flafla.utils.AuthManager;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected ImageButton menuBtn, searchBtn, cartBtn, profileBtn;
@@ -52,7 +53,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
 
         cartBtn.setOnClickListener(v -> {
-            Log.d("BaseActivity", "Cart button clicked");
+            if (new AuthManager().isSignedAsGuest()) {
+                Toast.makeText(this, "You must be logged in to access the cart", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             // TODO: Implementar la actividad del carrito
 //            Intent intent = new Intent(this, CartActivity.class);
 //            startActivity(intent);
