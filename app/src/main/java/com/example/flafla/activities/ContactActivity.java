@@ -53,7 +53,7 @@ public class ContactActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(latLng).title(getString(R.string.app_name)));
+        googleMap.addMarker(new MarkerOptions().position(latLng == null ? new LatLng(0, 0) : latLng).title(getString(R.string.app_name)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
     }
 
