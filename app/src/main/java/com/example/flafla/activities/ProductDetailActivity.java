@@ -3,6 +3,7 @@ package com.example.flafla.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +22,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.flafla.R;
 import com.example.flafla.adapters.ImageCarouselAdapter;
 import com.example.flafla.adapters.ReviewAdapter;
+import com.example.flafla.database.CartDatabaseHelper;
 import com.example.flafla.models.Review;
+import com.example.flafla.utils.AuthManager;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -50,6 +53,7 @@ public class ProductDetailActivity extends BaseActivity {
 
     private ViewPager2 viewPager;
     private ImageButton toggleSpecsBtn, toggleTermsBtn;
+    private Button addBag;
 
 
     @Override
@@ -66,6 +70,7 @@ public class ProductDetailActivity extends BaseActivity {
         setupToolbar();
 
         db = FirebaseFirestore.getInstance();
+        CartDatabaseHelper dbHelper = new CartDatabaseHelper(this);
 
         TextView back = findViewById(R.id.back_button);
 
@@ -76,6 +81,14 @@ public class ProductDetailActivity extends BaseActivity {
         productName = findViewById(R.id.text_product_name);
         productPrice = findViewById(R.id.text_product_price);
         productDescription = findViewById(R.id.text_product_description);
+
+        addBag = findViewById(R.id.add_to_bag);
+        addBag.setOnClickListener(v -> addToBag());
+
+        String product = getIntent().getStringExtra(EXTRA_PRODUCT);
+        if (dbHelper.getQuantityForProduct(product) > 0) {
+            addBag.setText("In Bag (" + dbHelper.getQuantityForProduct(product) + ")");
+        }
 
         specifications = findViewById(R.id.layout_specifications);
         termsConditions = findViewById(R.id.layout_terms);
@@ -93,6 +106,22 @@ public class ProductDetailActivity extends BaseActivity {
 
         String productId = getIntent().getStringExtra(EXTRA_PRODUCT);
         loadProduct(productId);
+    }
+
+    private void addToBag() {
+        if (new AuthManager().isSignedAsGuest()) {
+            Toast.makeText(this, "Please sign in to add to bag", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        CartDatabaseHelper dbHelper = new CartDatabaseHelper(this);
+
+        String product = getIntent().getStringExtra(EXTRA_PRODUCT);
+
+        dbHelper.addItem(product);
+        dbHelper.close();
+        addBag.setText("In Bag (" + dbHelper.getQuantityForProduct(product) + ")");
+        Toast.makeText(this, "Added to Bag", Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -107,4 +107,21 @@ public class CartDatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return items;
     }
+
+    public int getQuantityForProduct(String productId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE, new String[]{QUANTITY},
+                PRODUCT_ID + "=?", new String[]{productId},
+                null, null, null);
+
+        int quantity = 0;
+        if (cursor.moveToFirst()) {
+            quantity = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+        return quantity;
+    }
+
 }

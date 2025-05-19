@@ -58,9 +58,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                 return;
             }
 
-            // TODO: Implementar la actividad del carrito
-//            Intent intent = new Intent(this, CartActivity.class);
-//            startActivity(intent);
+            if (getClass().equals(CartActivity.class)) {
+                return;
+            }
+
+            Intent intent = new Intent(this, CartActivity.class);
+            startActivity(intent);
+
         });
 
         profileBtn.setOnClickListener(v -> {
