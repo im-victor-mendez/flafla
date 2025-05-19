@@ -47,6 +47,9 @@ public class ProfileActivity extends AppCompatActivity {
         ImageView profileImage = findViewById(R.id.profile_image);
         Button logout = findViewById(R.id.logout);
 
+        TextView orders = findViewById(R.id.orders);
+        orders.setOnClickListener(v -> startActivity(new Intent(this, OrdersActivity.class)));
+
         // Inicializa Firebase Auth
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();

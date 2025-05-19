@@ -90,4 +90,6 @@
     <string name="pending_instructions">We\'re processing your order now. We\'ll send you an email once it\'s dispatched containing tracking details.</string>
     <string name="shipped_instructions">Your order is shipped. We\'ve sent tracking details to your email.</string>
     <string name="delivered_instructions">Your order was delivered. Enjoy it!</string>
+    <string name="order">Order</string>
+    <string name="orders">Orders</string>
 </resources>

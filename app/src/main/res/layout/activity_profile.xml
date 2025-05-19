@@ -47,20 +47,39 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/header_profile">
 
-        <Button
-            android:id="@+id/logout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/orders"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/log_out"
-            android:drawableLeft="@drawable/logout"
-            android:drawableTint="@color/white"
-            android:drawablePadding="8dp"
-            android:padding="16dp"
-            android:backgroundTint="#D65A5A"
-            android:textColor="@color/white"
             android:layout_margin="16dp"
+            android:drawablePadding="8dp"
+            android:background="@drawable/button_background"
+            android:padding="16dp"
+            android:text="@string/orders"
+            android:textColor="@color/brown"
+            app:drawableLeftCompat="@android:drawable/ic_menu_sort_by_size"
+            app:drawableTint="@color/brown"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:ignore="RtlHardcoded" />
 
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="#D65A5A"
+        android:drawableLeft="@drawable/logout"
+        android:drawablePadding="8dp"
+        android:drawableTint="@color/white"
+        android:padding="16dp"
+        android:text="@string/log_out"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RtlHardcoded" />
 </androidx.constraintlayout.widget.ConstraintLayout>

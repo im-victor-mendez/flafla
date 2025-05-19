@@ -41,6 +41,9 @@ public class OrderDetailActivity extends BaseActivity {
 
         setupToolbar();
 
+        TextView back = findViewById(R.id.back);
+        back.setOnClickListener(v -> finish());
+
         id = findViewById(R.id.order_id);
         subtotal = findViewById(R.id.tvSubtotal);
         shipping = findViewById(R.id.tvShipping);
