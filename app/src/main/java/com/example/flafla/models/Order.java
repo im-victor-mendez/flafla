@@ -9,8 +9,9 @@ public class Order {
     private String id;
     private List<OrderItem> items;
     private Timestamp date;
-    private String status;
+    private OrderStatus status;
     private String giftMessage;
+    private double shipping;
 
     // Necesario para Firestore
     public Order() {
@@ -22,14 +23,16 @@ public class Order {
         this.date = builder.date;
         this.status = builder.status;
         this.giftMessage = builder.giftMessage;
+        this.shipping = builder.shipping;
     }
 
     public static class Builder {
         private String id;
         private List<OrderItem> items;
         private Timestamp date;
-        private String status;
+        private OrderStatus status;
         private String giftMessage;
+        private double shipping;
 
         public Builder setId(String id) {
             this.id = id;
@@ -47,12 +50,17 @@ public class Order {
         }
 
         public Builder setStatus(OrderStatus status) {
-            this.status = status.name();
+            this.status = OrderStatus.valueOf(status.name());
             return this;
         }
 
         public Builder setGiftMessage(String giftMessage) {
             this.giftMessage = giftMessage;
+            return this;
+        }
+
+        public Builder setShipping(double shipping) {
+            this.shipping = shipping;
             return this;
         }
 
@@ -73,11 +81,15 @@ public class Order {
         return date;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
     public String getGiftMessage() {
         return giftMessage;
+    }
+
+    public double getShipping() {
+        return shipping;
     }
 }

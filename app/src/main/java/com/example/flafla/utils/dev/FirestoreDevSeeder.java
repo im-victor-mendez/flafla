@@ -1,7 +1,10 @@
 package com.example.flafla.utils.dev;
 
+import com.example.flafla.enums.OrderStatus;
 import com.example.flafla.models.AvailableItem;
 import com.example.flafla.models.Cart;
+import com.example.flafla.models.Order;
+import com.example.flafla.models.OrderItem;
 import com.example.flafla.models.ProductPromotion;
 import com.example.flafla.models.PromotionCode;
 import com.example.flafla.models.Review;
@@ -19,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class FirestoreDevSeeder {
@@ -209,5 +213,55 @@ public class FirestoreDevSeeder {
                     });
         }
     }
+
+    public void seedRandomOrderToUser(String userId, int products, Runnable onComplete) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Mensajes de regalo aleatorios
+        String[] giftMessages = {
+                "¡Feliz cumpleaños!",
+                "Con mucho cariño.",
+                "Espero que te guste.",
+                "Un detalle para ti.",
+                "Gracias por todo."
+        };
+
+        // Crear items aleatorios
+        List<OrderItem> randomItems = new ArrayList<>();
+        Random random = new Random();
+        int itemCount = random.nextInt(products) + 1;
+
+        for (int i = 0; i < itemCount; i++) {
+            String productId = "product" + String.valueOf(random.nextInt(5) + 1); // "1" a "5"
+            int quantity = random.nextInt(3) + 1; // 1 a 3 unidades
+            double price = 50 + (100 * random.nextDouble()); // $50 a $150
+
+            OrderItem item = new OrderItem.Builder()
+                    .setProductId(productId)
+                    .setQuantity(quantity)
+                    .setPrice(Math.round(price * 100.0) / 100.0)
+                    .build();
+
+            randomItems.add(item);
+        }
+
+        // Crear orden
+        Order order = new Order.Builder()
+                .setId(UUID.randomUUID().toString())
+                .setItems(randomItems)
+                .setDate(Timestamp.now())
+                .setStatus(OrderStatus.values()[random.nextInt(OrderStatus.values().length)])
+                .setGiftMessage(giftMessages[random.nextInt(giftMessages.length)])
+                .build();
+
+        // Guardar en Firestore
+        db.collection("users")
+                .document(userId)
+                .collection("orders")
+                .document(order.getId())
+                .set(order)
+                .addOnCompleteListener(runnable -> onComplete.run());
+    }
+
 
 }

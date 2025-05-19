@@ -18,8 +18,6 @@ public class SeederManager {
                 prefs.edit().putBoolean(KEY_DATA_SEEDED, true).apply();
                 Log.d("SeederManager", "Datos de desarrollo insertados correctamente.");
             };
-
-            new FirestoreDevSeeder().seedAll(onComplete);
         }
 
         Log.d("SeederManager", "Datos de desarrollo ya insertados.");

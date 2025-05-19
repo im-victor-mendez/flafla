@@ -75,4 +75,19 @@
     <string name="date">Date</string>
     <string name="author_avatar">Author Avatar</string>
     <string name="customer_reviews">Customer Reviews</string>
+    <string name="checkout">Checkout</string>
+    <string name="owner">Owner</string>
+    <string name="thanks_for_your_order">Thanks for your order</string>
+    <string name="your_order_is">Your order is #</string>
+    <string name="status">Status</string>
+    <string name="feedback">Feedback</string>
+    <string name="total">Total:</string>
+    <string name="shipping">Shipping:</string>
+    <string name="subtotal">Subtotal:</string>
+    <string name="item">Item</string>
+    <string name="quantity">Qty:</string>
+    <string name="price_symbol">$</string>
+    <string name="pending_instructions">We\'re processing your order now. We\'ll send you an email once it\'s dispatched containing tracking details.</string>
+    <string name="shipped_instructions">Your order is shipped. We\'ve sent tracking details to your email.</string>
+    <string name="delivered_instructions">Your order was delivered. Enjoy it!</string>
 </resources>
