@@ -32,7 +32,6 @@ public class AvailableItem {
         }
     }
 
-    // Getters
     public String getProductId() {
         return productId;
     }

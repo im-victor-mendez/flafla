@@ -73,8 +73,7 @@ public class ProductPromotion {
             return instance;
         }
     }
-
-    // Getters (Firebase necesita getters públicos)
+    
     public String getProduct_id() {
         return product_id;
     }

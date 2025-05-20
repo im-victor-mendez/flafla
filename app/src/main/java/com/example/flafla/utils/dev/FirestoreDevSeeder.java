@@ -41,10 +41,9 @@ public class FirestoreDevSeeder {
 
         List<User> users = new ArrayList<>();
 
-        // Ejemplo: creamos 3 usuarios de prueba
         for (int i = 1; i <= 3; i++) {
             Cart cart = new Cart.Builder()
-                    .setItems(Collections.emptyList()) // o agrega ProductItem si deseas
+                    .setItems(Collections.emptyList())
                     .build();
 
             users.add(new User.Builder()
@@ -75,16 +74,15 @@ public class FirestoreDevSeeder {
         for (int i = 1; i <= 5; i++) {
             String productId = "product" + i;
 
-            // Solo agrega reviews a algunos productos (ej. probabilidad 60%)
             if (random.nextBoolean() || random.nextInt(3) == 0) {
-                int numberOfReviews = 1 + random.nextInt(4); // 1 a 4 reviews
+                int numberOfReviews = 1 + random.nextInt(4);
 
                 for (int j = 0; j < numberOfReviews; j++) {
                     Review review = new Review.Builder()
-                            .setAuthor_id("user" + random.nextInt(10)) // author_id: user0 - user9
+                            .setAuthor_id("user" + random.nextInt(10))
                             .setCreated_at(new Date(System.currentTimeMillis() - random.nextInt(1000000000)))
                             .setContent("Reseña aleatoria #" + (j + 1) + " para " + productId)
-                            .setRating(1 + random.nextInt(4)) // 0 a 4
+                            .setRating(1 + random.nextInt(4))
                             .build();
 
                     db.collection("products")
@@ -106,13 +104,13 @@ public class FirestoreDevSeeder {
 
         List<ProductPromotion> promotions = new ArrayList<>();
 
-        // Ejemplo: agregamos promociones tipo DISCOUNT para cada producto
+
         for (int i = 1; i <= 5; i++) {
-            long millisIn7Days = 7L * 24 * 60 * 60 * 1000; // Milisegundos en 7 días
+            long millisIn7Days = 7L * 24 * 60 * 60 * 1000;
             long nowMillis = System.currentTimeMillis();
             long futureMillis = nowMillis + millisIn7Days;
 
-            Timestamp validTo = new Timestamp(futureMillis / 1000, 0); // segundos y nanosegundos
+            Timestamp validTo = new Timestamp(futureMillis / 1000, 0);
 
             promotions.add(new ProductPromotion.Builder()
                     .setProductId("product" + i)
@@ -141,7 +139,6 @@ public class FirestoreDevSeeder {
     public static void seedPromotionCodes(Runnable onComplete) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Códigos de promoción de ejemplo
         Timestamp now = Timestamp.now();
         Date nextWeekDate = new Date(now.toDate().getTime() + 7L * 24 * 60 * 60 * 1000);
         Timestamp nextWeek = new Timestamp(nextWeekDate);
@@ -217,7 +214,6 @@ public class FirestoreDevSeeder {
     public void seedRandomOrderToUser(String userId, int products, Runnable onComplete) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Mensajes de regalo aleatorios
         String[] giftMessages = {
                 "¡Feliz cumpleaños!",
                 "Con mucho cariño.",
@@ -226,15 +222,14 @@ public class FirestoreDevSeeder {
                 "Gracias por todo."
         };
 
-        // Crear items aleatorios
         List<OrderItem> randomItems = new ArrayList<>();
         Random random = new Random();
         int itemCount = random.nextInt(products) + 1;
 
         for (int i = 0; i < itemCount; i++) {
-            String productId = "product" + String.valueOf(random.nextInt(5) + 1); // "1" a "5"
-            int quantity = random.nextInt(3) + 1; // 1 a 3 unidades
-            double price = 50 + (100 * random.nextDouble()); // $50 a $150
+            String productId = "product" + String.valueOf(random.nextInt(5) + 1);
+            int quantity = random.nextInt(3) + 1;
+            double price = 50 + (100 * random.nextDouble());
 
             OrderItem item = new OrderItem.Builder()
                     .setProductId(productId)

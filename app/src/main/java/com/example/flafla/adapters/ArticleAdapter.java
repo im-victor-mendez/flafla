@@ -95,7 +95,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             }
         }
 
-        // Usar Glide para cargar la imagen del artículo de forma eficiente
         Glide.with(context)
                 .load(article.getImage())
                 .into(holder.image);
@@ -123,9 +122,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
      * ViewHolder que mantiene las vistas de cada artículo para optimizar el reciclaje de vistas.
      */
     public static class ArticleViewHolder extends RecyclerView.ViewHolder {
-        ImageView image; // Imagen del artículo
-        TextView title;  // Título del artículo
-        FlexboxLayout tagsContainer; // Contenedor para los tags dinámicos
+        ImageView image;
+        TextView title;
+        FlexboxLayout tagsContainer;
 
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);

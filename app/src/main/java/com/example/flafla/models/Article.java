@@ -38,8 +38,6 @@ public class Article {
         this.author = author;
     }
 
-    // Getters y Setters necesarios para Firestore y para manipulación manual
-
     public String getId() {
         return id;
     }

@@ -29,7 +29,7 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private final List<Product> productList;
     private final Context context;
-    private final int itemLayoutRes; // Nuevo: recurso de layout
+    private final int itemLayoutRes;
 
     /**
      * Constructor del adapter.

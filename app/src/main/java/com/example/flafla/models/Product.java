@@ -50,8 +50,6 @@ public class Product {
         this.category = builder.category;
     }
 
-    // Getters y setters necesarios para Firestore
-
     public String getId() {
         return id;
     }
