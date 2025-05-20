@@ -21,6 +21,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * <h1>Setup Toolbar</h1>
+     * <p>
+     * Sets up the toolbar and its associated buttons.
+     * <p>
+     * Includes listeners for menu, search, title (home), cart, and profile buttons.
+     * <p>
+     * Navigates to corresponding activities when each button is clicked.
+     * <p>
+     * Checks if user is logged in before accessing the cart.
+     */
     protected void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
 

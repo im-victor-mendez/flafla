@@ -2,6 +2,7 @@ package com.example.flafla.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -39,18 +40,28 @@ public class BlogActivity extends BaseActivity {
 
         setupToolbar();
 
-        findViewById(R.id.back).setOnClickListener(v -> finish());
+        db = FirebaseFirestore.getInstance();
 
+        TextView back = findViewById(R.id.back);
         RecyclerView recyclerView = findViewById(R.id.recycler_blog);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         adapter = new ArticleAdapter(articleList, this);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        db = FirebaseFirestore.getInstance();
+        back.setOnClickListener(v -> finish());
 
         loadBlogArticles();
     }
 
+    /**
+     * <h1>Load Blog Articles</h1>
+     * <p>
+     * Loads all blog articles from the Firestore "articles" collection.
+     * <p>
+     * Clears the current list and repopulates it with the fetched data.
+     */
     private void loadBlogArticles() {
         db.collection("articles").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -64,6 +75,16 @@ public class BlogActivity extends BaseActivity {
                 .addOnFailureListener(e -> Log.e("BlogActivity", "Failed to fetch articles", e));
     }
 
+    /**
+     * <h1>Add Article From Snapshot</h1>
+     * <p>
+     * Converts a Firestore DocumentSnapshot to an Article object
+     * and adds it to the article list if valid.
+     * <p>
+     * Also notifies the adapter to update the UI.
+     *
+     * @param doc The DocumentSnapshot representing a blog article.
+     */
     private void addArticleFromSnapshot(@NonNull DocumentSnapshot doc) {
         Article article = doc.toObject(Article.class);
         if (article != null) {

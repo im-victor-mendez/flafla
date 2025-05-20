@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class CategoryProductsActivity extends BaseActivity {
 
-    public static final String EXTRA_CATEGORY = "CATEGORY";
+    public static final String CATEGORY = "CATEGORY";
 
     private FirebaseFirestore db;
     private ProductAdapter adapter;
@@ -69,7 +69,7 @@ public class CategoryProductsActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
 
 
-        String category = getIntent().getStringExtra(EXTRA_CATEGORY);
+        String category = getIntent().getStringExtra(CATEGORY);
         fetchCategoryProducts(category);
 
         TextView indicator = findViewById(R.id.indicator);
@@ -79,13 +79,12 @@ public class CategoryProductsActivity extends BaseActivity {
     /**
      * <h1>Fetch Category Products</h1>
      * <p>
-     * 1. Consulta el documento categories/{category}.
+     * Fetches products belonging to the specified category.
      * <p>
-     * 2. Extrae la lista de IDs de productos.
-     * <p>
-     * 3. Lanza una query whereIn a products con esos IDs.
+     * It queries the categories collection to get the product IDs,
+     * then performs batched queries to retrieve the product documents.
      *
-     * @param category El nombre del documento en /categories (flowers o plants).
+     * @param category The category document name (e.g., "flowers" or "plants").
      */
     private void fetchCategoryProducts(String category) {
         db.collection("categories")
@@ -96,9 +95,13 @@ public class CategoryProductsActivity extends BaseActivity {
     }
 
     /**
-     * <h1>Chunk</h1>
+     * <h1>Chunk List</h1>
      * <p>
-     * Divide una lista en trozos de tamaño 10.
+     * Splits a list into chunks of size 10 to handle Firestore 'whereIn' query limit.
+     *
+     * @param list The original list to be chunked.
+     * @param <T>  The type of elements in the list.
+     * @return A list of sublist, each with up to 10 elements.
      */
     private <T> List<List<T>> chunk(List<T> list) {
         List<List<T>> chunks = new ArrayList<>();
@@ -112,15 +115,19 @@ public class CategoryProductsActivity extends BaseActivity {
 
     /**
      * <h1>On Success</h1>
+     * <p>
+     * Handles a successful fetch of the category document.
+     * <p>
+     * Retrieves product IDs and loads product details in batches,
+     * updating the adapter when all batches are completed.
+     *
+     * @param doc The Firestore document snapshot for the category.
      */
     private void onSuccess(DocumentSnapshot doc) {
         List<String> ids = (List<String>) doc.get(getString(R.string.products_document));
 
         if (ids == null || ids.isEmpty()) return;
 
-
-        // Hacer batched get de productos (Firestore permite hasta 10 en whereIn)
-        // Si son > 10, fragmenta en lotes de 10
         List<List<String>> batches = chunk(ids);
 
         AtomicInteger completedBatches = new AtomicInteger(0);
@@ -135,9 +142,7 @@ public class CategoryProductsActivity extends BaseActivity {
                             products.add(p);
                         }
 
-                        // Incrementar contador de batches completados
                         if (completedBatches.incrementAndGet() == batches.size()) {
-                            // Si todos los batches ya terminaron, actualizar el adapter
                             adapter.notifyDataSetChanged();
                         }
                     })
@@ -145,6 +150,15 @@ public class CategoryProductsActivity extends BaseActivity {
         }
     }
 
+    /**
+     * <h1>On Failure</h1>
+     * <p>
+     * Handles failure in fetching the category document.
+     * <p>
+     * Displays a toast notifying the user of the error.
+     *
+     * @param e The exception occurred during fetching.
+     */
     private void onFailure(Exception e) {
         Toast.makeText(this, "Error al cargar categoría", Toast.LENGTH_SHORT).show();
     }

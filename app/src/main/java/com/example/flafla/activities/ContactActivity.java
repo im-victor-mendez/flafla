@@ -26,8 +26,13 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Map;
 
+/**
+ * <h1>Contact Activity</h1>
+ * Activity that displays the contact information for the store,
+ * including phone, email, address, opening hours, and a map with the location.
+ */
 public class ContactActivity extends AppCompatActivity implements OnMapReadyCallback {
-    LatLng latLng;
+    private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +58,21 @@ public class ContactActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(latLng == null ? new LatLng(0, 0) : latLng).title(getString(R.string.app_name)));
+        googleMap.addMarker(new MarkerOptions()
+                .position(latLng == null ? new LatLng(0, 0) : latLng)
+                .title(getString(R.string.app_name)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
     }
 
+    /**
+     * <h1>Load Data</h1>
+     * <p>
+     * Loads the store contact information from Firestore.
+     * <p>
+     * Sets opening hours, phone, email, and address fields.
+     * <p>
+     * Adds click listeners to allow calling, emailing, and viewing address on map.
+     */
     @SuppressLint("SetTextI18n")
     private void loadData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -98,7 +114,6 @@ public class ContactActivity extends AppCompatActivity implements OnMapReadyCall
                 intent.setData(Uri.parse("tel:" + phoneNumberText));
                 startActivity(intent);
             });
-
             phoneNumber.setPaintFlags(phoneNumber.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             emailSupport.setOnClickListener(v -> {
@@ -106,7 +121,6 @@ public class ContactActivity extends AppCompatActivity implements OnMapReadyCall
                 intent.setData(Uri.parse("mailto:" + emailSupportText));
                 startActivity(intent);
             });
-
             emailSupport.setPaintFlags(emailSupport.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             address.setOnClickListener(v -> {
@@ -114,7 +128,6 @@ public class ContactActivity extends AppCompatActivity implements OnMapReadyCall
                 intent.setData(Uri.parse("geo:0,0?q=" + addressText));
                 startActivity(intent);
             });
-
             address.setPaintFlags(address.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         });
     }

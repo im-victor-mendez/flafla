@@ -1,11 +1,9 @@
 package com.example.flafla.activities;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,9 +19,7 @@ import java.util.List;
 
 public class CartActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    private CartAdapter adapter;
     private CartDatabaseHelper dbHelper;
-    private Button btnClearCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +35,29 @@ public class CartActivity extends BaseActivity {
         setupToolbar();
 
         recyclerView = findViewById(R.id.cartRecyclerView);
-        btnClearCart = findViewById(R.id.btnClearCart);
+        Button clearCart = findViewById(R.id.btnClearCart);
+
         dbHelper = new CartDatabaseHelper(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadCartItems();
 
-        btnClearCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbHelper.clearCart();
-                loadCartItems();
-            }
+        clearCart.setOnClickListener(v -> {
+            dbHelper.clearCart();
+            loadCartItems();
         });
     }
 
-
+    /**
+     * <h1>Load Cart Items</h1>
+     * <p>
+     * Loads all cart items from the database and sets them into the RecyclerView adapter.
+     * <p>
+     * Also reuses the adapter’s callback to reload data when needed.
+     */
     private void loadCartItems() {
         List<CartItem> items = dbHelper.getAllItems();
-        adapter = new CartAdapter(items, dbHelper, this::loadCartItems);
+        CartAdapter adapter = new CartAdapter(items, dbHelper, this::loadCartItems);
         recyclerView.setAdapter(adapter);
     }
 }

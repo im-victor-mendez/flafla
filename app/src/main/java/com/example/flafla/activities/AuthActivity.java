@@ -27,70 +27,42 @@ import com.example.flafla.utils.AuthManager;
 import com.example.flafla.utils.AuthParams;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-/**
- * <h1>Auth Activity</h1>
- * <p>
- * Esta actividad maneja el inicio de sesión, la creación de cuenta y el inicio de sesión anónimo
- * mediante Firebase Auth.
- * </p>
- * Contiene los campos de entrada para el email y la contraseña, así como
- * botones para acceder a las funcionalidades de inicio de sesión, registro y acceso como invitado.
- */
 public class AuthActivity extends AppCompatActivity {
-
     private AuthManager authManager;
-    private EditText emailEditText;
-    private EditText passwordEditText;
+    private EditText emailEditText, passwordEditText;
 
-    /**
-     * <h1>On Create</h1>
-     * <p>
-     * Método llamado cuando se crea la actividad.
-     * </p>
-     * Inicializa los campos y botones, y configura los oyentes de click para
-     * cada uno de los botones (Iniciar sesión, Crear cuenta, Iniciar como invitado).
-     *
-     * @param savedInstanceState El estado guardado de la actividad.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_auth);
-
-        // Configura los márgenes de la actividad para no sobreponerse con los bordes del sistema.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_auth), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Inicializa el AuthManager.
         authManager = new AuthManager();
 
-        // Si el usuario ya está autenticado, navega directamente a la actividad principal.
+        // If the user is already authenticated, go directly to the main activity.
         if (authManager.isUserSignedIn()) {
             startActivity(new Intent(this, HomeActivity.class));
             finish();
             return;
         }
 
-        // Encuentra las vistas para el email y la contraseña.
         emailEditText = findViewById(R.id.email_auth);
         passwordEditText = findViewById(R.id.password_auth);
 
-        // Encuentra los botones y asigna los oyentes de click.
         Button loginButton = findViewById(R.id.login_auth);
         Button createButton = findViewById(R.id.create_auth);
         Button guestButton = findViewById(R.id.guest_auth);
         Button findPasswordButton = findViewById(R.id.find_password_auth);
         Button findIdButton = findViewById(R.id.find_id_auth);
 
-
         loginButton.setOnClickListener(v -> login());
         createButton.setOnClickListener(v -> createAccount());
         guestButton.setOnClickListener(v -> signInAnonymously());
-
         findPasswordButton.setOnClickListener(v -> resetPassword());
         findIdButton.setOnClickListener(v -> recoverEmail());
 
@@ -101,19 +73,19 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Dispatch Touch Event</h1>
      * <p>
-     * Este método sobrescribe el comportamiento de toque de pantalla en la actividad.
-     * Detecta si el usuario toca fuera de un campo de texto (<code>EditText</code>) y,
-     * si es así, oculta el teclado y elimina el foco del campo.
+     * This method overrides the screen touch behavior in the activity.
+     * It detects whether the user taps outside of a text field (<code>EditText</code>) and,
+     * if so, hides the keyboard and clears the focus from the field.
      * </p>
      *
      * <p>
-     * Es útil para mejorar la experiencia del usuario en formularios,
-     * ya que evita que el teclado se quede abierto innecesariamente.
+     * Useful for improving the user experience in forms
+     * by avoiding unnecessary keyboard visibility.
      * </p>
      *
-     * @param ev Evento táctil detectado en la actividad.
-     * @return true si el evento fue manejado correctamente, o el comportamiento predeterminado
-     * de <code>super.dispatchTouchEvent(ev)</code> en otros casos.
+     * @param ev Touch event detected in the activity.
+     * @return true if the event was handled correctly, or the default behavior
+     * from <code>super.dispatchTouchEvent(ev)</code> otherwise.
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -138,32 +110,28 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Login</h1>
      * <p>
-     * Método que maneja el inicio de sesión de un usuario.
+     * Method that handles user login.
      * </p>
-     * Valida los datos de entrada (email y contraseña), y llama a `AuthManager`
-     * para intentar iniciar sesión con Firebase.
+     * Validates input data (email and password), and calls `AuthManager`
+     * to attempt logging in with Firebase.
      * <p>
-     * Si la autenticación es exitosa, navega a la actividad de inicio (HomeActivity).
+     * If authentication is successful, navigates to the main activity (HomeActivity).
      */
     private void login() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        // Crea el objeto AuthParams con los parámetros necesarios.
         AuthParams authParams = new AuthParams(email, password, emailEditText, passwordEditText);
 
-        // Llama a AuthManager para intentar iniciar sesión.
         authManager.login(authParams, new AuthCallback() {
             @Override
             public void onSuccess(String message) {
-                // Si la autenticación es exitosa, muestra un mensaje y navega a la actividad principal.
                 Toast.makeText(AuthActivity.this, message, Toast.LENGTH_SHORT).show();
                 goToHomeActivity();
             }
 
             @Override
             public void onError(Exception exception) {
-                // Si hay un error, muestra un mensaje de error.
                 String errorMessage = "Error: " + exception.getMessage();
                 Toast.makeText(AuthActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
@@ -173,36 +141,33 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Create Account</h1>
      * <p>
-     * Método que maneja la creación de una nueva cuenta.
+     * Method that handles account creation.
      * </p>
-     * Valida los datos de entrada (email y contraseña), y llama a `AuthManager`
-     * para intentar crear la cuenta en Firebase.
+     * Validates input data (email and password), and calls `AuthManager`
+     * to attempt creating the account with Firebase.
      * <p>
-     * Si la creación de cuenta es exitosa, navega a la actividad de inicio (HomeActivity).
+     * If account creation is successful, navigates to the main activity (HomeActivity).
      */
     private void createAccount() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        // Crea el objeto AuthParams con los parámetros necesarios.
         AuthParams authParams = new AuthParams(email, password, emailEditText, passwordEditText);
 
-        // Llama a AuthManager para intentar crear la cuenta.
         authManager.createAccount(authParams, new AuthCallback() {
             @Override
             public void onSuccess(String message) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
+
                 User user = new User.Builder().setEmail(email).setId(authManager.getCurrentUserId()).build();
                 db.collection("users").document(user.getId()).set(user);
 
-                // Si la cuenta se crea exitosamente, muestra un mensaje y navega a la actividad principal.
                 Toast.makeText(AuthActivity.this, message, Toast.LENGTH_SHORT).show();
                 goToHomeActivity();
             }
 
             @Override
             public void onError(Exception exception) {
-                // Si hay un error, muestra un mensaje de error.
                 String errorMessage = "Error: " + exception.getMessage();
                 Toast.makeText(AuthActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
@@ -212,24 +177,21 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Sign In Anonymously</h1>
      * <p>
-     * Método que maneja el inicio de sesión anónimo. Llama a `AuthManager` para intentar iniciar
-     * sesión de manera anónima con Firebase.
+     * Method that handles anonymous login. Calls `AuthManager` to attempt
+     * signing in anonymously using Firebase.
      * </p>
-     * Si es exitoso, navega a la actividad de inicio (HomeActivity).
+     * If successful, navigates to the main activity (HomeActivity).
      */
     private void signInAnonymously() {
-        // Llama a AuthManager para intentar iniciar sesión anónimamente.
         authManager.signInAnonymously(new AuthCallback() {
             @Override
             public void onSuccess(String message) {
-                // Si la autenticación es exitosa, muestra un mensaje y navega a la actividad principal.
                 Toast.makeText(AuthActivity.this, message, Toast.LENGTH_SHORT).show();
                 goToHomeActivity();
             }
 
             @Override
             public void onError(Exception exception) {
-                // Si hay un error, muestra un mensaje de error.
                 String errorMessage = "Error: " + exception.getMessage();
                 Toast.makeText(AuthActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
@@ -239,10 +201,10 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Reset Password</h1>
      * <p>
-     * Método que solicita un enlace de restablecimiento de contraseña al correo proporcionado.
+     * Method that requests a password reset link to be sent to the provided email.
      * </p>
-     * Si el campo de correo está vacío, muestra un mensaje pidiendo que se ingrese uno.
-     * Si se proporciona un correo válido, llama al `AuthManager` para enviar el correo de recuperación.
+     * If the email field is empty, displays a message asking for one.
+     * If a valid email is provided, calls `AuthManager` to send the recovery email.
      */
     private void resetPassword() {
         String email = emailEditText.getText().toString().trim();
@@ -267,11 +229,11 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Recover Email</h1>
      * <p>
-     * Método que simula la recuperación del correo electrónico de una cuenta,
-     * reutilizando la lógica de restablecimiento de contraseña.
+     * Method that simulates recovering the email address for an account,
+     * reusing the password reset logic.
      * </p>
-     * Muestra un mensaje informando al usuario que recibirá un correo si el email existe.
-     * Si el campo de email está vacío, se muestra una advertencia.
+     * Displays a message informing the user that they will receive an email if it exists.
+     * If the email field is empty, a warning is shown.
      */
     private void recoverEmail() {
         if (emailEditText.getText().toString().trim().isEmpty()) {
@@ -287,10 +249,10 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Go To Home Activity</h1>
      * <p>
-     * Método que navega a la actividad de inicio (HomeActivity)
-     * después de una autenticación exitosa.
+     * Method that navigates to the main activity (HomeActivity)
+     * after a successful authentication.
      * </p>
-     * Finaliza la actividad actual.
+     * Finishes the current activity.
      */
     private void goToHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
@@ -301,15 +263,15 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Email Listener</h1>
      * <p>
-     * Escucha el evento del botón de acción del teclado cuando se está
-     * escribiendo en el campo de correo electrónico. Si se presiona la tecla
-     * "Next", el foco se mueve al campo de contraseña.
+     * Listens for the keyboard action button event when typing
+     * in the email field. If the "Next" key is pressed,
+     * focus moves to the password field.
      * </p>
      *
-     * @param v        TextView que dispara el evento
-     * @param actionId Código de acción del teclado (por ejemplo, IME_ACTION_NEXT)
-     * @param event    Evento de teclado (puede ser null)
-     * @return true si el evento fue manejado, false en caso contrario
+     * @param v        TextView that triggered the event
+     * @param actionId Keyboard action code (e.g., IME_ACTION_NEXT)
+     * @param event    Key event (can be null)
+     * @return true if the event was handled, false otherwise
      */
     private boolean emailListener(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -322,15 +284,15 @@ public class AuthActivity extends AppCompatActivity {
     /**
      * <h1>Password Listener</h1>
      * <p>
-     * Escucha el evento del botón de acción del teclado cuando se está
-     * escribiendo en el campo de contraseña. Si se presiona la tecla
-     * "Done", el teclado se oculta.
+     * Listens for the keyboard action button event when typing
+     * in the password field. If the "Done" key is pressed,
+     * the keyboard is hidden.
      * </p>
      *
-     * @param v        TextView que dispara el evento
-     * @param actionId Código de acción del teclado (por ejemplo, IME_ACTION_DONE)
-     * @param event    Evento de teclado (puede ser null)
-     * @return true si el evento fue manejado, false en caso contrario
+     * @param v        TextView that triggered the event
+     * @param actionId Keyboard action code (e.g., IME_ACTION_DONE)
+     * @param event    Key event (can be null)
+     * @return true if the event was handled, false otherwise
      */
     private boolean passwordListener(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
