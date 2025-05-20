@@ -29,15 +29,13 @@ Crear una app móvil Android que permita a los usuarios:
 ## 🗂 Estructura del Proyecto
 
 ```
-com.tienda.plantas
+com.example.flafla
 │
 ├── 🗂 activities/
 ├── 🗂 adapters/
 ├── 🗂 models/
-├── 🗂 viewmodels/
 ├── 🗂 utils/
 ├── 🗂 fragments/
-└── 🗂 assets/
 ```
 ---
 
@@ -56,7 +54,7 @@ com.tienda.plantas
 
     - Añadir el archivo google-services.json en /app.
 
-4. Configurar Firebase Auth, Firestore y Storage.
+4. Configurar Firebase Auth y Firestore.
 
 5. Ejecutar en un emulador o dispositivo físico.
 
