@@ -1,6 +1,6 @@
 # 🌿 Flafla
 
-**Flafla** es una aplicación Android (e-commerce verde) que facilita la compra de flores y plantas en línea.
+**Flafla** es una aplicación Android e-commerce que facilita la compra de flores y plantas en línea.
 Fue desarrollada para brindar una experiencia de compra cómoda, accesible y disfrutable, cubriendo una necesidad actual: la falta de apps de floristería usables y funcionales.
 
 ---
@@ -12,7 +12,6 @@ Crear una app móvil Android que permita a los usuarios:
 - Explorar una tienda de plantas y productos relacionados.
 - Comprar fácilmente desde su dispositivo.
 - Acceder a métodos de pago, historial de pedidos y opiniones.
-- Gestionar productos, stock y pedidos desde un panel admin (si aplica).
 
 ---
 
