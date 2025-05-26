@@ -15,6 +15,25 @@ Crear una app móvil Android que permita a los usuarios:
 
 ---
 
+## 📱 Preview
+
+|   |   |
+|---|---|
+| Authentication | Home |
+| ![image](https://github.com/user-attachments/assets/581077ec-b2fa-4e76-b38d-14cdcba29838) | ![Screenshot_20250519-213318~2](https://github.com/user-attachments/assets/605c1bdb-a746-4968-98cf-250c95d02729) |
+| Menu | Search |
+| ![Screenshot_20250519-213337~2](https://github.com/user-attachments/assets/19e18011-d062-4985-aa39-b36fc74c997d) | ![Screenshot_20250519-213612~2](https://github.com/user-attachments/assets/b7fe2b0e-6c0c-47f5-8fee-54bf2c219c76) |
+| Blog | Blog Content |
+| ![Screenshot_20250519-213757~2](https://github.com/user-attachments/assets/34b4dcd7-311a-4dbb-9183-c1451d533f8e) | ![Screenshot_20250519-213720~2](https://github.com/user-attachments/assets/2289121b-99f8-4893-98b6-9f530f6687c9) |
+| Shop | Category Shop |
+| ![Screenshot_20250519-213741~2](https://github.com/user-attachments/assets/204de30c-3bc7-401d-8f2f-2b7b5d6f5aeb) | ![Screenshot_20250519-213746~2](https://github.com/user-attachments/assets/76fef604-c330-4423-bfc5-238e9df3d3d9) |
+| Product | Checkout |
+| ![Screenshot_20250519-213626~2](https://github.com/user-attachments/assets/965e67df-4334-423e-b403-27f6696d05f8) | ![Screenshot_20250519-213533~2](https://github.com/user-attachments/assets/7ac325f7-8881-449c-88f8-f7842e5795fd) |
+| Contact | FAQ |
+| ![Screenshot_20250519-213810~2](https://github.com/user-attachments/assets/50ec8ff4-1019-44e6-b99a-ea8c499c9ed9) | ![Screenshot_20250519-213837~2](https://github.com/user-attachments/assets/6171a707-63e5-4a92-819e-c693611d79e2) |
+
+---
+
 ## 🧑‍💻 Tecnologías
 
 - Android (Java)
